@@ -578,74 +578,7 @@ namespace AutoBe
 
 
 
-        public class Wall
-        {
-            public int ID { get; set; }
-            public Point3d StartPoint { get; set; }
-
-            public Point3d EndPoint { set; get; }
-
-            public string Level { get; set; }
-
-            public double Width { get; set; }
-
-            public double Offset { get; set; }
-
-            
-        }
-
-
-        public class Floor
-        {
-            public int ID { get; set; }
-            public int CurveSize { set; get; }
-            public IList<Curve> Curves{ get; set; }
-            public  double Width { get; set; }
-            public string Level { get; set; }
-            public string Code { get; set; }
-            public string UsageName { get; set; }
-        }
-
-
-        public class Column
-        {
-            public int ID { get; set; }
-            public Point3d InsertionP { get; set; }
-            public double length { get; set; }
-            public double Width { get; set; }
-            public string Level { get; set; }
-            public string Code { get; set; }
-            public bool IsStructure { get; set; }
-        }
-
-        public class Beam
-        {
-            public int ID { get; set; }
-            public Point3d StartPoint { get; set; }
-
-            public Point3d EndPoint { set; get; }
-
-            public string Level { get; set; }
-
-            public double Width { get; set; }
-
-            public double Offset { get; set; }
-            public double Height { set; get; }
-
-        }
-
-
-        public class Pipe
-        {
-            public int ID { get; set; }
-            public Point3d StartPoint { get; set; }
-            public Point3d EndPoint { set; get; }
-            public string Level { get; set; }
-            public double Diameter { get; set; }
-            public double Offset { get; set; }
-            public string System { get; set; }
-        }
-
+        
         [CommandMethod("tt")]
 
         public void showLayerName()

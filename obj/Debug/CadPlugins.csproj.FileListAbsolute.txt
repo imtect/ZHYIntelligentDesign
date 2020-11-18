@@ -93,8 +93,9 @@ E:\7_ZHY2\7_CADPlugins\CadPlugins\obj\Debug\CadPlugins.pdb
 E:\01_Work\ZHY\ZHYIntelligentDesigne\bin\Debug\CadPlugins.dll
 E:\01_Work\ZHY\ZHYIntelligentDesigne\bin\Debug\CadPlugins.pdb
 E:\01_Work\ZHY\ZHYIntelligentDesigne\bin\Debug\Newtonsoft.Json.dll
+E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.Properties.Resources.resources
 E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.SBForm.resources
-E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.ZHYForm.resources
+E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.MainForm.resources
 E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.csproj.GenerateResource.cache
 E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.csproj.CoreCompileInputs.cache
 E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.csproj.CopyComplete

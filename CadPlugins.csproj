@@ -73,12 +73,17 @@
   <ItemGroup>
     <Compile Include="Auto.cs" />
     <Compile Include="DrawHelper.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="XiaCadlib.cs" />
-    <Compile Include="ZHYForm.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ZHYForm.Designer.cs">
-      <DependentUpon>ZHYForm.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MtSQLite.cs" />
     <Compile Include="SBForm.cs">
@@ -89,11 +94,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="SBForm.resx">
       <DependentUpon>SBForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ZHYForm.resx">
-      <DependentUpon>ZHYForm.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

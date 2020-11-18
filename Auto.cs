@@ -572,7 +572,7 @@ namespace AutoBe
         [CommandMethod("zhy")]
         public void ZHY()
         {
-            ZHYForm zhyForm = new ZHYForm();
+            MainForm zhyForm = new MainForm();
             Autodesk.AutoCAD.ApplicationServices.Application.ShowModelessDialog(zhyForm);
         }
 

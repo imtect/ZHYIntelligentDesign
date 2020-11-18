@@ -63,6 +63,26 @@ namespace CadPlugins {
         public int numc;
         public List<BanData> bans;
         public Dictionary<int, double> banUpLength;
+        #region 顶拱方案参数
+
+        public double ring1;
+        public double ring2;
+        public double ring3;
+        public double ring4;
+        public double ring5;
+        public double ring6;
+        public double ring7;
+
+        public int numA;
+        public int numB;
+        public int numC;
+
+
+        #endregion
+
+
+
+
         #endregion
         public MainForm() {
             InitializeComponent();
@@ -662,7 +682,40 @@ namespace CadPlugins {
 
 
         #endregion
+        #region 顶梁框架
+        public void RingInit()
+        {
+            ring1 = Convert.ToDouble(Ring1.Text);
+            ring2 = Convert.ToDouble(Ring2.Text);
+            ring3 = Convert.ToDouble(Ring3.Text);
+            ring4 = Convert.ToDouble(Ring4.Text);
+            ring5 = Convert.ToDouble(Ring5.Text);
+            ring6 = Convert.ToDouble(Ring6.Text);
+            ring7 = Convert.ToDouble(Ring7.Text);
+            numA = Convert.ToInt32(NumberA.Text);
+            numB = Convert.ToInt32(NumberB.Text);
+            numC = Convert.ToInt32(NumberC.Text);
 
+
+        }
+        public void CreateABeam()
+        {
+
+        }
+
+        public void CreateOneBeam(double st,double ed, Point3d center,double ang)
+        {
+            Point3d stP = new Point3d(st * Math.Cos(ang), st * Math.Sin(ang), 0);
+            Point3d edP = new Point3d(ed * Math.Cos(ang), ed * Math.Sin(ang), 0);
+            auto.CreateLine(stP, edP,"0");
+
+
+
+        }
+
+
+
+        #endregion
 
 
 
@@ -1128,6 +1181,11 @@ namespace CadPlugins {
         #endregion
 
         private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RingCircle_Click(object sender, EventArgs e)
         {
 
         }

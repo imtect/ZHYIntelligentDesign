@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auto.cs" />
+    <Compile Include="DrawHelper.cs" />
     <Compile Include="XiaCadlib.cs" />
     <Compile Include="ZHYForm.cs">
       <SubType>Form</SubType>

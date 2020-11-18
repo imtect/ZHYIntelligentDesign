@@ -851,7 +851,8 @@ namespace CadPlugins {
         #endregion
 
         #region Draw
-        Point3d initPos = new Point3d(10000, 0, 0);
+        static double initX = 10000;
+        Point3d initPos = new Point3d(initX, 0, 0);
         double length = 9680;
         double width = 2450;
         public void DrawCuttingStyles(List<List<BanData>> BanDatas) {
@@ -873,7 +874,8 @@ namespace CadPlugins {
                     CreateThreeLining(items, initPos);
                 }
 
-                initPos = new Point3d((i + 1) * 15000 + initPos.X, 0, 0);
+                initPos = new Point3d(initX + (i + 1) * 10000, 0, 0);
+                //initPos = new Point3d(initX, (i + 1) * 10000, 0);
             }
         }
 
@@ -884,11 +886,16 @@ namespace CadPlugins {
             BanData BanData0 = BanDatas[0];
 
             Point3d point00 = initPos; //左下角点
-            Point3d point01 = new Point3d(initPos.X + BanData0.longEdge, initPos.Y, 0); //长边点；
+            Point3d point01 = new Point3d(initPos.X + BanData0.longEdge, initPos.Y, 0); //长边点
             Point3d point02 = new Point3d(initPos.X, initPos.Y + width, 0); //高度
             Point3d point03 = new Point3d(initPos.X + BanData0.shortEdge, initPos.Y + width, 0); //短边
 
-            CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 });
+            CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 }, BanData0);
+
+            //绘制标注
+            DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString(), -20);//长边
+            DrawHelper.DrawVerticalDim(point00, point02, BanData0.width.ToString(), -20);//高度
+            DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString(), 20);//短边
 
             BanData BanData1 = BanDatas[1];
 
@@ -897,7 +904,12 @@ namespace CadPlugins {
             Point3d point12 = new Point3d(initPos.X + length, initPos.Y + width, 0); //高度
             Point3d point13 = new Point3d(initPos.X + length - BanData1.longEdge, initPos.Y + width, 0); //长边点
 
-            CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 });
+            CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
+
+            //绘制标注
+            DrawHelper.DrawHorizontalDim(point11, point10, BanData1.shortEdge.ToString(), -20);//长边
+            DrawHelper.DrawVerticalDim(point11, point12, BanData1.width.ToString(), -20);//高度
+            DrawHelper.DrawHorizontalDim(point12, point13, BanData1.longEdge.ToString(), 20);//短边
         }
 
         void CreateThreeLining(List<BanData> BanDatas, Point3d initPos) {
@@ -910,7 +922,14 @@ namespace CadPlugins {
             Point3d point02 = new Point3d(initPos.X, initPos.Y + width, 0); //高度
             Point3d point03 = new Point3d(initPos.X + BanData0.shortEdge, initPos.Y + width, 0); //短边
 
-            CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 });
+            CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 }, BanData0);
+
+            //绘制标注
+            DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString(), -20);//长边
+            DrawHelper.DrawVerticalDim(point00, point02, BanData0.longEdge.ToString(), -20);//高度
+            DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString(), 20);//短边
+
+
             //最右边
             BanData BanData2 = BanDatas[2];
 
@@ -919,7 +938,15 @@ namespace CadPlugins {
             Point3d point22 = new Point3d(initPos.X + length, initPos.Y + width, 0); //高度
             Point3d point23 = new Point3d(initPos.X + length - BanData2.shortEdge, initPos.Y + width, 0); //长边点
 
-            CreateLiningLine(new List<Point3d>() { point20, point21, point22, point23 });
+            CreateLiningLine(new List<Point3d>() { point20, point21, point22, point23 }, BanData2);
+
+
+            //绘制标注
+            DrawHelper.DrawHorizontalDim(point21, point20, BanData2.shortEdge.ToString(), -20);//长边
+            DrawHelper.DrawVerticalDim(point21, point22, BanData2.width.ToString(), -20);//高度
+            DrawHelper.DrawHorizontalDim(point22, point23, BanData2.longEdge.ToString(), 20);//短边
+
+
 
             //中间
             BanData BanData1 = BanDatas[1];
@@ -935,7 +962,11 @@ namespace CadPlugins {
                 Point3d point12 = new Point3d(point11.X, initPos.Y, 0); //右下角
                 Point3d point13 = new Point3d(point11.X - BanData1.shortEdge, initPos.Y, 0); //左下角
 
-                CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 });
+                CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
+
+                //绘制标注
+                DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString(), -20);//长边
+                DrawHelper.DrawHorizontalDim(point13, point12, BanData1.shortEdge.ToString(), 20);//短边
 
             } else {
                 double middleLeftPointX = initPos.X + BanData0.longEdge + downOffset / 2;
@@ -945,12 +976,16 @@ namespace CadPlugins {
                 Point3d point12 = new Point3d(point10.X + BanData1.shortEdge, initPos.Y + width, 0); //高度
                 Point3d point13 = new Point3d(point10.X + BanData1.shortEdge - BanData1.longEdge, initPos.Y + width, 0); //长边点
 
-                CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 });
+                CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
+
+                //绘制标注
+                DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString(), -20);//长边
+                DrawHelper.DrawHorizontalDim(point12, point13, BanData1.shortEdge.ToString(), 20);//短边
             }
         }
 
 
-        void CreateLiningLine(List<Point3d> points) { //逆时针绘制，从左下角开始画
+        void CreateLiningLine(List<Point3d> points, BanData banData) { //逆时针绘制，从左下角开始画
             if (points == null || points.Count != 4) return;
             auto.CreateLine(points[0], points[1], "0"); //长边
             auto.CreateLine(points[1], points[2], "0"); //高

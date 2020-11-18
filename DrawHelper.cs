@@ -28,6 +28,26 @@ namespace CadPlugins {
             return line;
         }
 
+        public static DBText CreateText(string textString, Point3d position, double height, string layerName, double ang = 0) {
+            DBText text = null;
+            using (Transaction trans = db.TransactionManager.StartTransaction()) {
+                DocumentLock documentLock = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.LockDocument();
+                BlockTable bt = (BlockTable)trans.GetObject(db.BlockTableId, OpenMode.ForWrite);
+                BlockTableRecord btr = (BlockTableRecord)trans.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+                text = new DBText();
+                text.Rotation = ang;
+                text.TextString = textString;
+                text.Position = position;
+                text.Height = height;
+                text.Layer = layerName;
+                btr.AppendEntity(text);
+                trans.AddNewlyCreatedDBObject(text, true);
+                trans.Commit();
+                documentLock.Dispose();
+            }
+            return text;
+        }
+
 
         public static void DrawHorizontalDim(Point3d pt1, Point3d pt2, string text, double length) {
             using (Transaction trans = db.TransactionManager.StartTransaction()) {

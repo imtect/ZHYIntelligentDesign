@@ -30,6 +30,7 @@
         {
             System.Windows.Forms.GroupBox groupBox1;
             System.Windows.Forms.GroupBox groupBox2;
+            this.GenerateCutTypeBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.Lap = new System.Windows.Forms.TextBox();
@@ -68,6 +69,9 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.GenerateTestCutTypes = new System.Windows.Forms.Button();
+            this.GenerateAllTestCutTypes = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             groupBox1 = new System.Windows.Forms.GroupBox();
             groupBox2 = new System.Windows.Forms.GroupBox();
             groupBox1.SuspendLayout();
@@ -77,6 +81,8 @@
             // groupBox1
             // 
             groupBox1.BackColor = System.Drawing.Color.Transparent;
+            groupBox1.Controls.Add(this.button2);
+            groupBox1.Controls.Add(this.GenerateCutTypeBtn);
             groupBox1.Controls.Add(this.label2);
             groupBox1.Controls.Add(this.button1);
             groupBox1.Controls.Add(this.Lap);
@@ -103,6 +109,16 @@
             groupBox1.TabIndex = 7;
             groupBox1.TabStop = false;
             groupBox1.Text = "ab";
+            // 
+            // GenerateCutTypeBtn
+            // 
+            this.GenerateCutTypeBtn.Location = new System.Drawing.Point(540, 142);
+            this.GenerateCutTypeBtn.Name = "GenerateCutTypeBtn";
+            this.GenerateCutTypeBtn.Size = new System.Drawing.Size(110, 23);
+            this.GenerateCutTypeBtn.TabIndex = 7;
+            this.GenerateCutTypeBtn.Text = "生成切割类型";
+            this.GenerateCutTypeBtn.UseVisualStyleBackColor = true;
+            this.GenerateCutTypeBtn.Click += new System.EventHandler(this.GenerateCutTypeBtn_Click);
             // 
             // label2
             // 
@@ -139,7 +155,6 @@
             this.RingNumCombox.Size = new System.Drawing.Size(121, 20);
             this.RingNumCombox.TabIndex = 3;
             this.RingNumCombox.Text = "1";
-            this.RingNumCombox.SelectedIndexChanged += new System.EventHandler(this.RingNumCombox_SelectedIndexChanged);
             // 
             // textBox2
             // 
@@ -155,7 +170,6 @@
             this.RingLap.Size = new System.Drawing.Size(100, 21);
             this.RingLap.TabIndex = 2;
             this.RingLap.Text = "90";
-            this.RingLap.TextChanged += new System.EventHandler(this.Diameter_TextChanged);
             // 
             // label9
             // 
@@ -322,7 +336,6 @@
             this.comboBox1.Size = new System.Drawing.Size(121, 20);
             this.comboBox1.TabIndex = 3;
             this.comboBox1.Text = "1";
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.RingNumCombox_SelectedIndexChanged);
             // 
             // textBox4
             // 
@@ -331,7 +344,6 @@
             this.textBox4.Size = new System.Drawing.Size(100, 21);
             this.textBox4.TabIndex = 2;
             this.textBox4.Text = "90";
-            this.textBox4.TextChanged += new System.EventHandler(this.Diameter_TextChanged);
             // 
             // label12
             // 
@@ -461,17 +473,48 @@
             this.label1.Size = new System.Drawing.Size(0, 12);
             this.label1.TabIndex = 0;
             // 
+            // GenerateTestCutTypes
+            // 
+            this.GenerateTestCutTypes.Location = new System.Drawing.Point(717, 94);
+            this.GenerateTestCutTypes.Name = "GenerateTestCutTypes";
+            this.GenerateTestCutTypes.Size = new System.Drawing.Size(142, 23);
+            this.GenerateTestCutTypes.TabIndex = 8;
+            this.GenerateTestCutTypes.Text = "生成测试切割类型";
+            this.GenerateTestCutTypes.UseVisualStyleBackColor = true;
+            this.GenerateTestCutTypes.Click += new System.EventHandler(this.GenerateTestCutTypes_Click);
+            // 
+            // GenerateAllTestCutTypes
+            // 
+            this.GenerateAllTestCutTypes.Location = new System.Drawing.Point(717, 130);
+            this.GenerateAllTestCutTypes.Name = "GenerateAllTestCutTypes";
+            this.GenerateAllTestCutTypes.Size = new System.Drawing.Size(142, 23);
+            this.GenerateAllTestCutTypes.TabIndex = 9;
+            this.GenerateAllTestCutTypes.Text = "生成测试全部切割类型";
+            this.GenerateAllTestCutTypes.UseVisualStyleBackColor = true;
+            this.GenerateAllTestCutTypes.Click += new System.EventHandler(this.GenerateAllTestCutTypes_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(540, 184);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(110, 23);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "生成切割类型";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // ZHYForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(871, 510);
+            this.Controls.Add(this.GenerateAllTestCutTypes);
+            this.Controls.Add(this.GenerateTestCutTypes);
             this.Controls.Add(groupBox2);
             this.Controls.Add(groupBox1);
             this.Controls.Add(this.label1);
             this.Name = "ZHYForm";
             this.Text = "ZHY";
-            this.Load += new System.EventHandler(this.ZHYForm_Load);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
@@ -521,5 +564,9 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button GenerateCutTypeBtn;
+        private System.Windows.Forms.Button GenerateTestCutTypes;
+        private System.Windows.Forms.Button GenerateAllTestCutTypes;
+        private System.Windows.Forms.Button button2;
     }
 }

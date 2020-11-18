@@ -15,15 +15,13 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Internal;
 using Autodesk.AutoCAD.Internal.Calculator;
 using System.Runtime.InteropServices;
-using Autodesk.AutoCAD.Interop;
+//using Autodesk.AutoCAD.Interop;
 using CadPlugins;
 using System.Windows.Media.Media3D;
 using AutoBe;
 
-namespace CadPlugins
-{
-    public partial class ZHYForm : Form
-    {
+namespace CadPlugins {
+    public partial class ZHYForm : Form {
 
 
         #region field
@@ -66,8 +64,7 @@ namespace CadPlugins
         public List<BanData> bans;
         public Dictionary<int, double> banUpLength;
         #endregion
-        public ZHYForm()
-        {
+        public ZHYForm() {
             InitializeComponent();
             RingNumCombox.Items.Add("1");
             RingNumCombox.Items.Add("2");
@@ -87,12 +84,11 @@ namespace CadPlugins
             dr1["name"] = "直线";
             data.Rows.Add(dr1);
             data.Rows.Add(dr2);
-            
+
 
         }
 
-        public void Init()
-        {
+        public void Init() {
             D = Convert.ToDouble(Diameter.Text);
             R = D / 2;
             ringWidth = Convert.ToDouble(RingWidth.Text);
@@ -123,18 +119,15 @@ namespace CadPlugins
             bans = new List<BanData>();
         }
         #region MainMethod
-        private void button1_Click(object sender, EventArgs e)
-        {
+        private void button1_Click(object sender, EventArgs e) {
             Run();
         }
 
-        public void Run()
-        {
+        public void Run() {
             Init();
             int num = (int)((aMax - aMin) / step);
             int i;
-            for (i = 0; i < num; i++)
-            {
+            for (i = 0; i < num; i++) {
                 angs.Clear();
                 a = aMin + i * step - lap;
                 b = a / 4;
@@ -145,35 +138,32 @@ namespace CadPlugins
                 Point3d cc = GetCiccleCenter(i);
                 AddLines();
                 BasicCircle(cc, r);
-                auto.CreateText(four.ToString(), cc, 800, "0",0);
-                auto.CreateText(three.ToString(), cc, 800, "0",0);
+                auto.CreateText(four.ToString(), cc, 800, "0", 0);
+                auto.CreateText(three.ToString(), cc, 800, "0", 0);
                 CreateCircleLines();
             }
         }
-        private void Lining_Click(object sender, EventArgs e)
-        {
+        private void Lining_Click(object sender, EventArgs e) {
             LiningPlan();
             Tk();
         }
-        public void Tk()
-        {
+        public void Tk() {
             Point3d tkOriPoint = new Point3d(-61902, -63911, 0);
             auto.AddBlockReference("tk", tkOriPoint, 0);
         }
 
-        
 
 
 
-        public void LiningPlan()
-        {
+
+        public void LiningPlan() {
             Circle c = auto.GetAnEntity("请选择一个圆", typeof(Circle)) as Circle;
             double R = c.Radius;
-            auto.CreateBlockByCircle("af", R - 500, 1, 2.5, c.Center,0);
+            auto.CreateBlockByCircle("af", R - 500, 1, 2.5, c.Center, 0);
             auto.CreateCircle(c.Center, R - 500, "0");
-            auto.CreateBlockByCircle("bf", R - 300, 1, 7.5, c.Center,1800,true);
+            auto.CreateBlockByCircle("bf", R - 300, 1, 7.5, c.Center, 1800, true);
             auto.CreateCircle(c.Center, R - 350, "0");
-            auto.CreateBlockByCircle("cf", R , 7.75, 10, c.Center,1000,true);
+            auto.CreateBlockByCircle("cf", R, 7.75, 10, c.Center, 1000, true);
             //auto.CreateCircle(c.Center, R - 350, "0");
 
             List<Entity> ents = GetAFengBlock(R);
@@ -217,13 +207,11 @@ namespace CadPlugins
         #endregion
 
         #region SubMethod
-        public void AddAF(double ang,double ra)
-        {
+        public void AddAF(double ang, double ra) {
 
         }
 
-        public List<Entity> GetAFengBlock(double R)
-        {
+        public List<Entity> GetAFengBlock(double R) {
             List<Point2d> ps1 = new List<Point2d>();
             List<Point2d> ps2 = new List<Point2d>();
             Point2d p1 = new Point2d(-300, R - 600 + 20);
@@ -231,7 +219,7 @@ namespace CadPlugins
             Point2d p3 = new Point2d(300, R - 600 - 20);
             Point2d p4 = new Point2d(-300, R - 600 - 20);
 
-            
+
             Point2d p5 = new Point2d(-100, R - 600 + 7);
             Point2d p6 = new Point2d(100, R - 600 + 7);
             Point2d p7 = new Point2d(100, R - 600 - 7);
@@ -248,50 +236,44 @@ namespace CadPlugins
             ps2.Add(p8);
             ps2.Add(p5);
 
-            Polyline pl1 = auto.CreatePLine(ps1,"0");
+            Polyline pl1 = auto.CreatePLine(ps1, "0");
             Polyline pl2 = auto.CreatePLine(ps2, "0");
             List<Entity> ents = new List<Entity>();
             ents.Add(pl1);
             ents.Add(pl2);
-            
+
             return ents;
-           
+
         }
 
 
-        
-        public Point3d GetCiccleCenter(int i)
-        {
+
+        public Point3d GetCiccleCenter(int i) {
             double x = i % 10 * 250000;
             double y = (int)(i / 10) * 250000;
             Point3d center = new Point3d(x, y, 0);
             return center;
         }
-        public void BasicCircle(Point3d center, double cr)
-        {
+        public void BasicCircle(Point3d center, double cr) {
             auto.CreateLayer("F");
             auto.CreateCircle(center, cr, "F");
             double cR = cr + ringWidth - ringLap;
             auto.CreateCircle(center, cR, "F");
         }
-        public Line CreateCircleLine(double R, double r, double ang)
-        {
+        public Line CreateCircleLine(double R, double r, double ang) {
             Point3d pr = new Point3d(r * Math.Cos(ang), r * Math.Sin(ang), 0);
             Point3d pR = new Point3d(R * Math.Cos(ang), R * Math.Sin(ang), 0);
             Line l = auto.CreateLine(pr, pR, "0");
             return l;
         }
-        public void CreateCircleLines()
-        {
-            for (int i = 0; i < numBo; i++)
-            {
+        public void CreateCircleLines() {
+            for (int i = 0; i < numBo; i++) {
                 double ang = i * (delDe * Math.PI / 180);
                 CreateCircleLine(R, r, ang);
                 angs.Add(ang);
             }
         }
-        public Line CreateXline(double x, double y)
-        {
+        public Line CreateXline(double x, double y) {
             Point3d p1 = new Point3d(-x, y, 0);
             Point3d p2 = new Point3d(x, y, 0);
             Point3d p3 = new Point3d(-x, -y, 0);
@@ -304,8 +286,7 @@ namespace CadPlugins
             return xLine;
         }
 
-        public Line CreateYLine(double x, double y, double del, string name, ref int num)
-        {
+        public Line CreateYLine(double x, double y, double del, string name, ref int num) {
             Point3d pt1, pt2, pt3, pt4;
             double ym = y - del;
             if (ym < 0) ym = 0;
@@ -322,19 +303,15 @@ namespace CadPlugins
             Point3d p7 = new Point3d(-x, -y, 0);
             Point3d p8 = new Point3d(-x, -ym, 0);
 
-            if (ym == 0)
-            {
+            if (ym == 0) {
 
-                if (x < SWAB(del, a, b))
-                {
+                if (x < SWAB(del, a, b)) {
                     pt1 = new Point3d(x - SWAB(del, a, b) / 2, 0, 0);
-                    auto.CreateText(name, pt1, 500, "0",0);                                        
+                    auto.CreateText(name, pt1, 500, "0", 0);
                     num = num + 1;
-                }
-                else
-                {
+                } else {
                     pt1 = new Point3d(x - SWAB(del, a, b) / 2, 0, 0);
-                    auto.CreateText(name, pt1, 500, "0",0);
+                    auto.CreateText(name, pt1, 500, "0", 0);
                     pt2 = new Point3d(-x + SWAB(del, a, b) / 2, 0, 0);
                     auto.CreateText(name, pt2, 500, "0", 0);
                     num += 2;
@@ -342,19 +319,14 @@ namespace CadPlugins
 
 
 
-            }
-            else
-            {
-                if (x < SWAB(del, a, b))
-                {
+            } else {
+                if (x < SWAB(del, a, b)) {
                     pt1 = new Point3d(x - SWAB(del, a, b) / 2, y - del / 2, 0);
                     pt3 = new Point3d(-x + SWAB(del, a, b) / 2, -y + del / 2, 0);
                     auto.CreateText(name, pt1, 500, "0", 0);
                     auto.CreateText(name, pt3, 500, "0", 0);
                     num += 2;
-                }
-                else
-                {
+                } else {
                     pt1 = new Point3d(x - SWAB(del, a, b) / 2, y - del / 2, 0);
                     pt2 = new Point3d(-x + SWAB(del, a, b) / 2, y - del / 2, 0);
                     pt3 = new Point3d(-x + SWAB(del, a, b) / 2, -y + del / 2, 0);
@@ -377,8 +349,7 @@ namespace CadPlugins
             return yLine;
 
         }
-        public void AddLines()
-        {
+        public void AddLines() {
             auto.CreateLayer("JF");
             double x = 0;
             double y = 0.5 * b - lap / 2;
@@ -389,40 +360,33 @@ namespace CadPlugins
                 double x_length = 2 * x;
                 Line xline = CreateXline(x, y);//绘制横线
                 double xh = -0.5 * SWAB(switch_ab, a, b) - lap / 2;//a
-                while (xh < x - 500)
-                {
-                    if (xh > 0)
-                    {
+                while (xh < x - 500) {
+                    if (xh > 0) {
                         Line yline = CreateYLine(xh, y, switch_ab, fourName, ref four);//第一次b //绘制纵线
                     }
                     xh += SWAB(switch_ab, a, b);//a 
 
                 }
                 xh -= SWAB(switch_ab, a, b);
-                if (switch_ab == b && xh < x - 500 - a / 4)
-                {
+                if (switch_ab == b && xh < x - 500 - a / 4) {
                     Line yline1 = CreateYLine(xh + 3 * a / 4, y, switch_ab, threeName, ref three);//当水平增量为a时 判断是否以一般3/4区分  绘制纵线
-                   
-                    
-                   
-                }
-                else if (switch_ab == b && xh < x - 500 - a / 2)
-                {
+
+
+
+                } else if (switch_ab == b && xh < x - 500 - a / 2) {
                     Line yline1 = CreateYLine(xh + a / 2, y, switch_ab, twoName, ref two);//当水平增量为a时 判断是否以一般/2区分  绘制纵线
                 }
-                if (switch_ab == a)
-                {
+                if (switch_ab == a) {
                     CreateXLineShort(xh, y);//水平增量为b 时   画水平短线
                 }
-                CreateSideboardName(xh,x, y, switch_ab, center);
+                CreateSideboardName(xh, x, y, switch_ab, center);
 
 
                 switch_ab = SWAB(switch_ab, a, b);//a
 
                 y += switch_ab;//第一次+a；                
             }
-            if (switch_ab == a)
-            {
+            if (switch_ab == a) {
                 y -= a;
                 CreateYLineShort(x, y);//绘制最上侧和最下侧的纵线
             }
@@ -432,18 +396,15 @@ namespace CadPlugins
         }
 
 
-        public void CreateSideboardName(double xh,double x, double y, double del, Point3d center)
-        {
-            if (del == b)
-            {
-                if (y < b)
-                {
+        public void CreateSideboardName(double xh, double x, double y, double del, Point3d center) {
+            if (del == b) {
+                if (y < b) {
                     Point3d p = new Point3d(x - 1000, y - (del / 2), 0);
                     numx += 1;
                     DBText text = auto.CreateText(numx.ToString(), p, 500, "0");
                     Point3d p2 = auto.GetPointMirrorByYline(p, center);
                     auto.CreateText(numx.ToString(), p2, 500, "0");
-                    BanData ban = new BanData();                    
+                    BanData ban = new BanData();
                     ban.code = numx;
                     ban.longEdge = x - xh;
                     ban.shortEdge = x - xh;
@@ -452,9 +413,7 @@ namespace CadPlugins
                     ban.count = 2;
                     bans.Add(ban);
 
-                }
-                else
-                {
+                } else {
                     Point3d p = new Point3d(x - 1000, y - (del / 2), 0);
                     numx += 1;
                     DBText text = auto.CreateText(numx.ToString(), p, 500, "0");
@@ -468,11 +427,8 @@ namespace CadPlugins
                     ban.count = 4;
                     bans.Add(ban);
                 }
-            }
-            else
-            {
-                for (int i = 1; i < 5; i++)
-                {
+            } else {
+                for (int i = 1; i < 5; i++) {
                     double yp = y - (4 - i) * b - b / 2;
                     double xp = GetPoint_X(r, yp) - 1000;
                     Point3d p = new Point3d(xp - 200, yp, 0);
@@ -480,8 +436,7 @@ namespace CadPlugins
                     DBText text = auto.CreateText(numx.ToString(), p, 500, "0");
                     auto.CreateFourText(numx.ToString(), p, center);
                     BanData ban = new BanData();
-                    if (i == 1)
-                    {
+                    if (i == 1) {
                         ban.code = numx;
                         ban.longEdge = GetPoint_X(r, y - a) - xh;
                         ban.shortEdge = xp - xh;
@@ -490,41 +445,36 @@ namespace CadPlugins
                         ban.count = 4;
                         bans.Add(ban);
                     }
-                    if (i == 2 || i == 3)
-                    {
+                    if (i == 2 || i == 3) {
                         ban.code = numx;
-                        ban.longEdge = GetPoint_X(r, yp - b)-xh;
+                        ban.longEdge = GetPoint_X(r, yp - b) - xh;
                         ban.shortEdge = xp - xh;
                         ban.width = b;
                         ban.type = BanType.AbnormalBan;
                         ban.count = 4;
                         bans.Add(ban);
                     }
-                    if (i == 4)
-                    {
+                    if (i == 4) {
                         ban.code = numx;
-                        ban.longEdge = GetPoint_X(r, yp - b)-xh; ;
+                        ban.longEdge = GetPoint_X(r, yp - b) - xh; ;
                         ban.shortEdge = x - xh;
                         ban.width = b;
                         ban.type = BanType.AbnormalBan;
                         ban.count = 4;
                         bans.Add(ban);
                     }
-                    
+
 
                 }
             }
         }
 
-        public Line CreateXLineShort(double xh, double y)
-        {
+        public Line CreateXLineShort(double xh, double y) {
             int i;
             Line l = null;
-            for (i = 1; i < 4; i++)
-            {
+            for (i = 1; i < 4; i++) {
                 double x1 = GetPoint_X(r, (y - i * a / 4));
-                if ((Math.Abs(x1 - xh) > b + 500) & i < 3)
-                {
+                if ((Math.Abs(x1 - xh) > b + 500) & i < 3) {
                     Point3d pUp1 = new Point3d(xh + b, y - i * b, 0);
                     Point3d pDown1 = new Point3d(xh + b, y - a, 0);
                     Point3d pUp2 = new Point3d(-xh - b, y - i * b, 0);
@@ -556,8 +506,7 @@ namespace CadPlugins
                 auto.CreateLine(pl13, pr13, "0");
                 auto.CreateLine(pl14, pr14, "0");
                 xlineLengths += 4 * l.Length;
-                if ((Math.Abs(x1 - xh) > b + 500) & i < 3)
-                {
+                if ((Math.Abs(x1 - xh) > b + 500) & i < 3) {
                     xh += b;
                 }
             }
@@ -567,12 +516,10 @@ namespace CadPlugins
 
 
 
-        public void CreateYLineShort(double x, double y)
-        {
+        public void CreateYLineShort(double x, double y) {
             Point3d p;
             double xs = b / 2 - lap / 2;
-            while (xs < x - 500)
-            {
+            while (xs < x - 500) {
                 double ys = GetPoint_X(r, xs);
                 Point3d p1 = new Point3d(xs, y, 0);
                 Point3d p2 = new Point3d(xs, ys, 0);
@@ -596,28 +543,24 @@ namespace CadPlugins
             }
             xs -= b / 2;
             int topNum = 0;
-            while (xs >= 0)
-            {
-                
+            while (xs >= 0) {
+
                 topNum += 1;
-                
+
                 numx += 1;
                 p = new Point3d(xs, y + 500, 0);
                 auto.CreateText(numx.ToString(), p, 500, "0", 0);
                 auto.CreateFourText(numx.ToString(), p, center);
-                if (topNum == 1)
-                {
+                if (topNum == 1) {
                     BanData ban = new BanData();
                     ban.code = numx;
-                    ban.longEdge = GetPoint_X(r,(xs-b/2) - y);
+                    ban.longEdge = GetPoint_X(r, (xs - b / 2) - y);
                     ban.shortEdge = 0;
                     ban.width = b;
                     ban.type = BanType.AbnormalBan;
                     ban.count = 4;
                     bans.Add(ban);
-                }
-                else
-                {
+                } else {
                     BanData ban = new BanData();
                     ban.code = numx;
                     ban.longEdge = GetPoint_X(r, (xs - b / 2) - y);
@@ -647,13 +590,11 @@ namespace CadPlugins
         #endregion
 
         #region BasicMethod
-        public double GetPoint_X(double r, double y)
-        {
+        public double GetPoint_X(double r, double y) {
             return Math.Sqrt(r * r - y * y);
         }
 
-        public double SWAB(double m, double a, double b)
-        {
+        public double SWAB(double m, double a, double b) {
             if (m == a) return b;
             else return a;
         }
@@ -661,37 +602,388 @@ namespace CadPlugins
 
         #endregion
 
-        
+        #region Calculate
+        public List<BanData> BanDatas = new List<BanData>() {
+            new BanData(){code = 1, shortEdge = 3213,longEdge = 3230,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 2, shortEdge = 1867,longEdge = 2008,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 3, shortEdge = 1585,longEdge = 1870,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 4, shortEdge = 1160,longEdge = 1591,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 5, shortEdge = 2997,longEdge = 3579,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 6, shortEdge = 5884,longEdge = 6623,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 7, shortEdge = 3831,longEdge = 4840,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 8, shortEdge = 2722,longEdge = 3804,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 9, shortEdge = 1466,longEdge = 2741,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 10,shortEdge = 2408,longEdge = 3898,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 11,shortEdge = 1907,longEdge = 3639,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 12,shortEdge = 3538,longEdge = 5553,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 13,shortEdge = 1219,longEdge = 3574,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 14,shortEdge = 3296,longEdge = 6081,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 15,shortEdge = 2386,longEdge = 5755,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 16,shortEdge = 4211,longEdge = 8472,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 17,shortEdge = 0   ,longEdge = 3085,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 18,shortEdge = 1378,longEdge = 2283,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 19,shortEdge = 2269,longEdge = 3008,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 20,shortEdge = 2997,longEdge = 3579,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 21,shortEdge = 3570,longEdge = 4001,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 22,shortEdge = 3995,longEdge = 4280,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 23,shortEdge = 4277,longEdge = 4417,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 97,shortEdge = 9680,longEdge = 9680,width = 2450,type = BanType.BanLining },
+        };
+        private List<int> handledBanData = new List<int>();
+
+        private List<List<BanData>> results = new List<List<BanData>>();
+
+        BanData comparer;
+
+        public void CalculateCuttingStyle(List<BanData> BanDatas) {
+            if (BanDatas == null || BanDatas.Count == 0) return;
+
+            results.Clear();
+            handledBanData.Clear();
+
+            //中幅板宽度
+            comparer = BanDatas.Where(k => k.type == BanType.BanLining).FirstOrDefault();
+            if (comparer == null) {
+                comparer = new BanData() { code = 100, shortEdge = 11360, longEdge = 11360, width = 2800, type = BanType.BanLining };
+            }
+
+            //排序
+            BanDatas = BanDatas.Where(k => k.type != BanType.BanLining).OrderByDescending(k => k.longEdge).ToList();
+
+            //比较
+            for (int i = 0; i < BanDatas.Count; i++) {
+
+                BanData item1 = BanDatas[i];
+
+                if (item1.width < comparer.width) continue;
 
 
+                for (int j = i + 1; j < BanDatas.Count; j++) {
+
+                    BanData item2 = BanDatas[j];
+
+                    if (item2.width < comparer.width) continue;
+
+                    double p1Lp2S = item1.longEdge + item2.shortEdge;
+                    double p1Sp2L = item1.shortEdge + item2.longEdge;
+
+                    double maxLength = p1Lp2S >= p1Sp2L ? p1Lp2S : p1Sp2L; //获取最大值
+
+                    //最大值是否超过中幅版的长度，超过不满足
+                    if (maxLength > comparer.longEdge) {
+                        continue;
+                    } else {
+                        //不超过计算还剩多少
+                        double offset = comparer.longEdge - maxLength;
+
+                        //判断剩余的长边是否有小于该长度的，可以实现三个板子的拼接
+                        BanData isThreeLining = IsExitLining(BanDatas, offset);
+
+                        //满足两个排列组合
+                        if (isThreeLining == null) {
+
+                            if (IsValidate(item1, item2)) {
+                                results.Add(new List<BanData>() { item1, item2 });
+
+                                handledBanData.Add(item1.code);
+                                handledBanData.Add(item2.code);
+                            }
+                        } else { //满足三个组合
+
+                            if (IsValidate(item1, item2, isThreeLining)) {
+                                results.Add(new List<BanData>() { item1, item2, isThreeLining });
+
+                                handledBanData.Add(item1.code);
+                                handledBanData.Add(item2.code);
+                                handledBanData.Add(isThreeLining.code);
+                            }
+                        }
+                    }
+                }
+            }
+
+            //输出
+            for (int i = 0; i < results.Count; i++) {
+                string str = string.Empty;
+                results[i].ForEach(k => {
+                    str += $"{k.code} - ";
+                });
+                Console.WriteLine($"可能存在的组合为：{str}");
+            }
+        }
+
+        public void CalculateCuttingStyle2(List<BanData> BanDatas) {
+            if (BanDatas == null || BanDatas.Count == 0) return;
+
+            results.Clear();
+
+            //中幅板宽度
+            comparer = BanDatas.Where(k => k.type == BanType.BanLining).FirstOrDefault();
+            if (comparer == null) {
+                comparer = new BanData() { code = 100, shortEdge = 11360, longEdge = 11360, width = 2800, type = BanType.BanLining };
+            }
+
+            //排序
+            BanDatas = BanDatas.Where(k => k.type != BanType.BanLining).OrderByDescending(k => k.longEdge).ToList();
+
+            //比较
+            for (int i = 0; i < BanDatas.Count; i++) {
+
+                BanData item1 = BanDatas[i];
+
+                if (item1.width < comparer.width) continue;
 
 
+                for (int j = i + 1; j < BanDatas.Count; j++) {
 
-        private void ZHYForm_Load(object sender, EventArgs e)
-        {
-            
-            
+                    BanData item2 = BanDatas[j];
 
+                    if (item2.width < comparer.width) continue;
+
+                    double p1Lp2S = item1.longEdge + item2.shortEdge;
+                    double p1Sp2L = item1.shortEdge + item2.longEdge;
+
+                    double maxLength = p1Lp2S >= p1Sp2L ? p1Lp2S : p1Sp2L; //获取最大值
+
+                    //最大值是否超过中幅版的长度，超过不满足
+                    if (maxLength > comparer.longEdge) {
+                        continue;
+                    } else {
+                        //不超过计算还剩多少
+                        double offset = comparer.longEdge - maxLength;
+
+                        //判断剩余的长边是否有小于该长度的，可以实现三个板子的拼接
+                        BanData isThreeLining = IsExitLining(BanDatas, offset);
+
+                        //满足两个排列组合
+                        if (isThreeLining == null) {
+
+                            if (!IsValidate2(item1, item2))
+                                results.Add(new List<BanData>() { item1, item2 });
+
+                        } else { //满足三个组合
+
+                            if (!IsValidate2(item1, item2, isThreeLining))
+                                results.Add(new List<BanData>() { item1, item2, isThreeLining });
+
+                        }
+                    }
+                }
+            }
+
+            //输出
+            //for (int i = 0; i < results.Count; i++) {
+            //    string str = string.Empty;
+            //    results[i].ForEach(k => {
+            //        str += $"{k.code} - ";
+            //    });
+            //    Debug.Log($"可能存在的组合为：{str}");
+            //}
+
+            List<int> tempData = new List<int>();
+            for (int i = 0; i < results.Count; i++) {
+
+                List<BanData> data = results[i];
+
+                if (isExit(data, tempData)) continue;
+
+                string str = string.Empty;
+                data.ForEach(k => {
+                    str += $"{k.code} - ";
+                    tempData.Add(k.code);
+                });
+                Console.WriteLine($"可能存在的组合为：{str}");
+            }
+        }
+
+        bool isExit(List<BanData> datas, List<int> tempData) {
+            foreach (var item in datas) {
+                if (tempData.Contains(item.code))
+                    return true;
+            }
+            return false;
+        }
+
+        BanData IsExitLining(List<BanData> BanDatas, double length) {
+            return BanDatas.Where(k => k.longEdge <= length).FirstOrDefault();
+        }
+
+        bool IsValidate(BanData item1, BanData item2) {
+            if (item1 != null
+                && item2 != null
+                && handledBanData != null
+                && !handledBanData.Contains(item1.code)
+                && !handledBanData.Contains(item2.code))
+                return true;
+            return false;
+        }
+
+        bool IsValidate(BanData item1, BanData item2, BanData item3) {
+            if (item1 != null
+                && item2 != null
+                && item3 != null
+                && handledBanData != null
+                && !handledBanData.Contains(item1.code)
+                && !handledBanData.Contains(item2.code)
+                && !handledBanData.Contains(item3.code))
+                return true;
+            return false;
+        }
+
+        bool IsValidate2(BanData item1, BanData item2) {
+            bool isExit = false;
+            results.ForEach(k => {
+                if (k.Contains(item1) && k.Contains(item2))
+                    isExit = true;
+            });
+            return isExit;
+        }
+
+        bool IsValidate2(BanData item1, BanData item2, BanData item3) {
+            bool isExit = false;
+            results.ForEach(k => {
+                if (k.Contains(item1) && k.Contains(item2) && k.Contains(item3))
+                    isExit = true;
+            });
+            return isExit;
+        }
+
+        #endregion
+
+        #region Draw
+        Point3d initPos = new Point3d(10000, 0, 0);
+        double length = 9680;
+        double width = 2450;
+        public void DrawCuttingStyles(List<List<BanData>> BanDatas) {
+
+            initPos = new Point3d(0, 0, 0);
+
+            length = comparer.longEdge;
+            width = comparer.width;
+
+            for (int i = 0; i < BanDatas.Count; i++) {
+                List<BanData> items = BanDatas[i];
+
+                if (items.Count == 2) {
+
+                    CreateTwoLining(items, initPos);
+
+                } else if (items.Count == 3) {
+
+                    CreateThreeLining(items, initPos);
+                }
+
+                initPos = new Point3d((i + 1) * 15000 + initPos.X, 0, 0);
+            }
         }
 
 
+        void CreateTwoLining(List<BanData> BanDatas, Point3d initPos) {
+            if (BanDatas == null || BanDatas.Count == 0) return;
 
+            BanData BanData0 = BanDatas[0];
 
+            Point3d point00 = initPos; //左下角点
+            Point3d point01 = new Point3d(initPos.X + BanData0.longEdge, initPos.Y, 0); //长边点；
+            Point3d point02 = new Point3d(initPos.X, initPos.Y + width, 0); //高度
+            Point3d point03 = new Point3d(initPos.X + BanData0.shortEdge, initPos.Y + width, 0); //短边
 
-        private void Diameter_TextChanged(object sender, EventArgs e)
-        {
+            CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 });
 
+            BanData BanData1 = BanDatas[1];
+
+            Point3d point10 = new Point3d(initPos.X + length - BanData1.shortEdge, initPos.Y, 0); //短边左下角点
+            Point3d point11 = new Point3d(initPos.X + length, initPos.Y, 0); //端边点；
+            Point3d point12 = new Point3d(initPos.X + length, initPos.Y + width, 0); //高度
+            Point3d point13 = new Point3d(initPos.X + length - BanData1.longEdge, initPos.Y + width, 0); //长边点
+
+            CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 });
         }
 
-        private void RingNumCombox_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        void CreateThreeLining(List<BanData> BanDatas, Point3d initPos) {
+            if (BanDatas == null || BanDatas.Count == 0) return;
+            //最左边
+            BanData BanData0 = BanDatas[0];
 
+            Point3d point00 = initPos; //左下角点
+            Point3d point01 = new Point3d(initPos.X + BanData0.longEdge, initPos.Y, 0); //长边点；
+            Point3d point02 = new Point3d(initPos.X, initPos.Y + width, 0); //高度
+            Point3d point03 = new Point3d(initPos.X + BanData0.shortEdge, initPos.Y + width, 0); //短边
+
+            CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 });
+            //最右边
+            BanData BanData2 = BanDatas[2];
+
+            Point3d point20 = new Point3d(initPos.X + length - BanData2.longEdge, initPos.Y, 0); //短边左下角点
+            Point3d point21 = new Point3d(initPos.X + length, initPos.Y, 0); //端边点；
+            Point3d point22 = new Point3d(initPos.X + length, initPos.Y + width, 0); //高度
+            Point3d point23 = new Point3d(initPos.X + length - BanData2.shortEdge, initPos.Y + width, 0); //长边点
+
+            CreateLiningLine(new List<Point3d>() { point20, point21, point22, point23 });
+
+            //中间
+            BanData BanData1 = BanDatas[1];
+
+            double upOffset = length - BanData0.shortEdge - BanData1.longEdge - BanData2.shortEdge;
+            double downOffset = length - BanData0.longEdge - BanData1.shortEdge - BanData2.longEdge;
+
+            if (upOffset < downOffset) {
+                double middleLeftPointX = initPos.X + BanData0.shortEdge + upOffset / 2;
+
+                Point3d point10 = new Point3d(middleLeftPointX, initPos.Y + width, 0); //左上角
+                Point3d point11 = new Point3d(middleLeftPointX + BanData1.longEdge, initPos.Y + width, 0); //右上角；
+                Point3d point12 = new Point3d(point11.X, initPos.Y, 0); //右下角
+                Point3d point13 = new Point3d(point11.X - BanData1.shortEdge, initPos.Y, 0); //左下角
+
+                CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 });
+
+            } else {
+                double middleLeftPointX = initPos.X + BanData0.longEdge + downOffset / 2;
+
+                Point3d point10 = new Point3d(middleLeftPointX, initPos.Y, 0); //短边左下角点
+                Point3d point11 = new Point3d(point10.X + BanData1.shortEdge, initPos.Y, 0); //端边点；
+                Point3d point12 = new Point3d(point10.X + BanData1.shortEdge, initPos.Y + width, 0); //高度
+                Point3d point13 = new Point3d(point10.X + BanData1.shortEdge - BanData1.longEdge, initPos.Y + width, 0); //长边点
+
+                CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 });
+            }
         }
 
-        
+
+        void CreateLiningLine(List<Point3d> points) { //逆时针绘制，从左下角开始画
+            if (points == null || points.Count != 4) return;
+            auto.CreateLine(points[0], points[1], "0"); //长边
+            auto.CreateLine(points[1], points[2], "0"); //高
+            auto.CreateLine(points[2], points[3], "0"); //短边
+            auto.CreateLine(points[3], points[0], "0"); //斜边
+        }
+
+
+        #endregion
+
+        private void GenerateCutTypeBtn_Click(object sender, EventArgs e) {
+            CalculateCuttingStyle(bans);
+            DrawCuttingStyles(results);
+        }
+
+        private void GenerateTestCutTypes_Click(object sender, EventArgs e) {
+            CalculateCuttingStyle(BanDatas);
+            DrawCuttingStyles(results);
+        }
+
+        private void GenerateAllTestCutTypes_Click(object sender, EventArgs e) {
+            CalculateCuttingStyle2(BanDatas);
+            DrawCuttingStyles(results);
+        }
+
+        private void button2_Click(object sender, EventArgs e) {
+            CalculateCuttingStyle2(bans);
+            DrawCuttingStyles(results);
+        }
+
+
     }
-    public class BanData
-    {
+    public class BanData {
         public int code; //幅板的ID
         public double shortEdge; //短边的长度
         public double longEdge; //长边的长度
@@ -700,8 +992,7 @@ namespace CadPlugins
         public int count;
     }
 
-    public enum BanType
-    {
+    public enum BanType {
         BanLining, //中幅板
         ThreeQuartersBan, //四分之三板
         HalfBan, //二分之一板

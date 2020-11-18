@@ -8,7 +8,7 @@ using Autodesk.AutoCAD.Internal;
 using Autodesk.AutoCAD.Internal.Calculator;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Autodesk.AutoCAD.Interop;
+//using Autodesk.AutoCAD.Interop;
 using CadPlugins;
 using System.Drawing;
 using System.Windows.Media.Media3D;
@@ -26,12 +26,6 @@ namespace AutoBe
             acEd = acDoc.Editor;
             db = acDoc.Database;
         }
-
-
-
-
-
-
 
         public void AddBlock(string blockName, List<Entity> ents)
         {
@@ -535,35 +529,35 @@ namespace AutoBe
             
         }
 
-        [CommandMethod("AddMenu")]
+        //[CommandMethod("AddMenu")]
 
-        public void AddMenu()
-        {
-            AcadApplication acadApp = Application.AcadApplication as AcadApplication;
-            AcadPopupMenu SBaddMenu = null;
-            if (SBaddMenu == null)
-            {
-                SBaddMenu = acadApp.MenuGroups.Item(0).Menus.Add("提取坐标");
-                SBaddMenu.AddMenuItem(SBaddMenu.Count, "画一根优雅的直线", "line ");
-                AcadPopupMenu subMenu = SBaddMenu.AddSubMenu(SBaddMenu.Count, "子菜单对象");
-                subMenu.AddMenuItem(SBaddMenu.Count, "画个圆", "circle ");
-                SBaddMenu.AddSeparator(SBaddMenu.Count);
+        //public void AddMenu()
+        //{
+        //    AcadApplication acadApp = Application.AcadApplication as AcadApplication;
+        //    AcadPopupMenu SBaddMenu = null;
+        //    if (SBaddMenu == null)
+        //    {
+        //        SBaddMenu = acadApp.MenuGroups.Item(0).Menus.Add("提取坐标");
+        //        SBaddMenu.AddMenuItem(SBaddMenu.Count, "画一根优雅的直线", "line ");
+        //        AcadPopupMenu subMenu = SBaddMenu.AddSubMenu(SBaddMenu.Count, "子菜单对象");
+        //        subMenu.AddMenuItem(SBaddMenu.Count, "画个圆", "circle ");
+        //        SBaddMenu.AddSeparator(SBaddMenu.Count);
 
-            }
-            bool isShowed = false;
-            foreach(AcadPopupMenu menu in acadApp.MenuBar)
-            {
-                if (menu == SBaddMenu)
-                {
-                    isShowed = true;
-                    break;
-                }
-            }
-            if (!isShowed)
-            {
-                SBaddMenu.InsertInMenuBar(acadApp.MenuBar.Count);
-            }            
-        }
+        //    }
+        //    bool isShowed = false;
+        //    foreach(AcadPopupMenu menu in acadApp.MenuBar)
+        //    {
+        //        if (menu == SBaddMenu)
+        //        {
+        //            isShowed = true;
+        //            break;
+        //        }
+        //    }
+        //    if (!isShowed)
+        //    {
+        //        SBaddMenu.InsertInMenuBar(acadApp.MenuBar.Count);
+        //    }            
+        //}
         //menubar(0不显示，1显示)
 
         [CommandMethod("SB")]

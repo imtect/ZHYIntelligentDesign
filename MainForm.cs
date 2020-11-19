@@ -718,9 +718,8 @@ namespace CadPlugins {
         #endregion
 
 
-
-
         #region Calculate
+        //例子
         public List<BanData> BanDatas = new List<BanData>() {
             new BanData(){code = 1, shortEdge = 3213,longEdge = 3230,width = 2450,type = BanType.AbnormalBan },
             new BanData(){code = 2, shortEdge = 1867,longEdge = 2008,width = 2450,type = BanType.AbnormalBan },
@@ -747,34 +746,40 @@ namespace CadPlugins {
             new BanData(){code = 23,shortEdge = 4277,longEdge = 4417,width = 2450,type = BanType.AbnormalBan },
             new BanData(){code = 97,shortEdge = 9680,longEdge = 9680,width = 2450,type = BanType.BanLining },
         };
+
+        //已经处理的数据
         private List<int> handledBanData = new List<int>();
 
+        //可能的组合
         private List<List<BanData>> results = new List<List<BanData>>();
 
+        //中幅板的数据，以中幅板作为模板进行切割下料
         BanData comparer;
 
         public void CalculateCuttingStyle(List<BanData> BanDatas) {
             if (BanDatas == null || BanDatas.Count == 0) return;
 
-            results.Clear();
-            handledBanData.Clear();
+            ClearDatas();
 
             //中幅板宽度
             comparer = BanDatas.Where(k => k.type == BanType.BanLining).FirstOrDefault();
+
             if (comparer == null) {
-                comparer = new BanData() { code = 100, shortEdge = 11360, longEdge = 11360, width = 2800, type = BanType.BanLining };
+                comparer = new BanData() { code = 10000, shortEdge = a, longEdge = a, width = b, type = BanType.BanLining };
             }
 
             //排序
             BanDatas = BanDatas.Where(k => k.type != BanType.BanLining).OrderByDescending(k => k.longEdge).ToList();
+
+            //string json = JsonConvert.SerializeObject(BanDatas);
+            //File.WriteAllText("C:/Users/imtect/Desktop/temp.json", json);
 
             //比较
             for (int i = 0; i < BanDatas.Count; i++) {
 
                 BanData item1 = BanDatas[i];
 
-                if (item1.width < comparer.width) continue;
-
+                if (item1.width < comparer.width) continue; //暂时去除宽度不是正常宽度的部分，后期需要考虑斜率去处理
 
                 for (int j = i + 1; j < BanDatas.Count; j++) {
 
@@ -819,26 +824,17 @@ namespace CadPlugins {
                     }
                 }
             }
-
-            //输出
-            for (int i = 0; i < results.Count; i++) {
-                string str = string.Empty;
-                results[i].ForEach(k => {
-                    str += $"{k.code} - ";
-                });
-                Console.WriteLine($"可能存在的组合为：{str}");
-            }
         }
 
         public void CalculateCuttingStyle2(List<BanData> BanDatas) {
             if (BanDatas == null || BanDatas.Count == 0) return;
 
-            results.Clear();
+            ClearDatas();
 
             //中幅板宽度
             comparer = BanDatas.Where(k => k.type == BanType.BanLining).FirstOrDefault();
             if (comparer == null) {
-                comparer = new BanData() { code = 100, shortEdge = 11360, longEdge = 11360, width = 2800, type = BanType.BanLining };
+                comparer = new BanData() { code = 10000, shortEdge = a, longEdge = a, width = b, type = BanType.BanLining };
             }
 
             //排序
@@ -889,15 +885,6 @@ namespace CadPlugins {
                 }
             }
 
-            //输出
-            //for (int i = 0; i < results.Count; i++) {
-            //    string str = string.Empty;
-            //    results[i].ForEach(k => {
-            //        str += $"{k.code} - ";
-            //    });
-            //    Debug.Log($"可能存在的组合为：{str}");
-            //}
-
             List<int> tempData = new List<int>();
             for (int i = 0; i < results.Count; i++) {
 
@@ -912,6 +899,13 @@ namespace CadPlugins {
                 });
                 Console.WriteLine($"可能存在的组合为：{str}");
             }
+        }
+
+        void ClearDatas() {
+            if (results != null)
+                results.Clear();
+            if (handledBanData != null)
+                handledBanData.Clear();
         }
 
         bool isExit(List<BanData> datas, List<int> tempData) {
@@ -969,35 +963,43 @@ namespace CadPlugins {
         #endregion
 
         #region Draw
-        static double initX = 10000;
-        Point3d initPos = new Point3d(initX, 0, 0);
+
+        private double initPosition; //切割下料图的初始水平位置
+        private double horizontalOffset; //下料图之间的水平偏移量
+        private double verticalOffset; //下料图之间的垂直偏移量
+        private double columeCount; //每行下料图的个数
+
+        private double horizontalLabelOffset; //水平标注偏移量
+        private double verticalLabelOffset; //垂直标注偏移量
+
+        Point3d initPos; //下料图的初始位置
+
         double length = 9680;
         double width = 2450;
         public void DrawCuttingStyles(List<List<BanData>> BanDatas) {
 
-            initPos = new Point3d(0, 0, 0);
-
             length = comparer.longEdge;
             width = comparer.width;
+
+            int rowCount = 0;
 
             for (int i = 0; i < BanDatas.Count; i++) {
                 List<BanData> items = BanDatas[i];
 
+                if (i % columeCount == 0) rowCount++;
+
+                var horPos = initPosition + (i % columeCount) * horizontalOffset;
+                var verPos = (rowCount - 1) * -verticalOffset;
+
+                initPos = new Point3d(horPos, verPos, 0);
+
                 if (items.Count == 2) {
-
                     CreateTwoLining(items, initPos);
-
                 } else if (items.Count == 3) {
-
                     CreateThreeLining(items, initPos);
                 }
-
-                initPos = new Point3d(initX + (i + 1) * 15000, 0, 0);
             }
-
-            //CreateTwoLining(BanDatas[1], initPos);
         }
-
 
         void CreateTwoLining(List<BanData> BanDatas, Point3d initPos) {
             if (BanDatas == null || BanDatas.Count == 0) return;
@@ -1012,9 +1014,9 @@ namespace CadPlugins {
             CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 }, BanData0);
 
             //绘制标注
-            //DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString(), -20);//长边
-            //DrawHelper.DrawVerticalDim(point00, point02, BanData0.width.ToString(), -20);//高度
-            //DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString(), 20);//短边
+            DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString("N0"), -horizontalLabelOffset);//长边
+            DrawHelper.DrawVerticalDim(point00, point02, BanData0.width.ToString("N0"), -verticalLabelOffset);//高度
+            DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString("N0"), horizontalLabelOffset);//短边
 
             //创建数字标识
             CreateText(BanData0, point00);
@@ -1029,12 +1031,14 @@ namespace CadPlugins {
             CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
 
             //绘制标注
-            //DrawHelper.DrawHorizontalDim(point11, point10, BanData1.shortEdge.ToString(), -20);//长边
-            //DrawHelper.DrawVerticalDim(point11, point12, BanData1.width.ToString(), -20);//高度
-            //DrawHelper.DrawHorizontalDim(point12, point13, BanData1.longEdge.ToString(), 20);//短边
+            DrawHelper.DrawHorizontalDim(point11, point10, BanData1.shortEdge.ToString("N0"), -horizontalLabelOffset);//短边
+            DrawHelper.DrawVerticalDim(point11, point12, BanData1.width.ToString("N0"), verticalLabelOffset);//高度
+            DrawHelper.DrawHorizontalDim(point12, point13, BanData1.longEdge.ToString("N0"), horizontalLabelOffset);//长边
 
             //创建数字标识
             CreateText(BanData1, point12, false);
+
+            DrawHelper.DrawHorizontalDim(point02, point12, length.ToString("N0"), 2 * horizontalLabelOffset);//总长
         }
 
         void CreateThreeLining(List<BanData> BanDatas, Point3d initPos) {
@@ -1050,9 +1054,9 @@ namespace CadPlugins {
             CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 }, BanData0);
 
             //绘制标注
-            //DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString(), -20);//长边
-            //DrawHelper.DrawVerticalDim(point00, point02, BanData0.longEdge.ToString(), -20);//高度
-            //DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString(), 20);//短边
+            DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString("N0"), -horizontalLabelOffset);//长边
+            DrawHelper.DrawVerticalDim(point00, point02, BanData0.longEdge.ToString("N0"), -verticalLabelOffset);//高度
+            DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString("N0"), horizontalLabelOffset);//短边
 
             //创建数字标识
             CreateText(BanData0, point00);
@@ -1070,13 +1074,14 @@ namespace CadPlugins {
 
 
             //绘制标注
-            //DrawHelper.DrawHorizontalDim(point21, point20, BanData2.shortEdge.ToString(), -20);//长边
-            //DrawHelper.DrawVerticalDim(point21, point22, BanData2.width.ToString(), -20);//高度
-            //DrawHelper.DrawHorizontalDim(point22, point23, BanData2.longEdge.ToString(), 20);//短边
+            DrawHelper.DrawHorizontalDim(point21, point20, BanData2.longEdge.ToString("N0"), -horizontalLabelOffset);//短边
+            DrawHelper.DrawVerticalDim(point21, point22, BanData2.width.ToString("N0"), verticalLabelOffset);//高度
+            DrawHelper.DrawHorizontalDim(point22, point23, BanData2.shortEdge.ToString("N0"), horizontalLabelOffset);//长边
 
             //创建数字标识
             CreateText(BanData2, point22, false);
 
+            DrawHelper.DrawHorizontalDim(point02, point22, length.ToString("N0"), verticalLabelOffset * 2);//总长
 
             //中间
             BanData BanData1 = BanDatas[1];
@@ -1095,8 +1100,8 @@ namespace CadPlugins {
                 CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
 
                 //绘制标注
-                //DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString(), -20);//长边
-                //DrawHelper.DrawHorizontalDim(point13, point12, BanData1.shortEdge.ToString(), 20);//短边
+                DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString("N0"), horizontalLabelOffset);//长边
+                DrawHelper.DrawHorizontalDim(point13, point12, BanData1.shortEdge.ToString("N0"), -horizontalLabelOffset);//短边
 
                 //创建数字标识
                 CreateText(BanData1, point13);
@@ -1112,14 +1117,13 @@ namespace CadPlugins {
                 CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
 
                 //绘制标注
-                //DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString(), -20);//长边
-                //DrawHelper.DrawHorizontalDim(point12, point13, BanData1.shortEdge.ToString(), 20);//短边
+                DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString("N0"), -horizontalLabelOffset);//短边
+                DrawHelper.DrawHorizontalDim(point12, point13, BanData1.shortEdge.ToString("N0"), horizontalLabelOffset);//长边
 
                 //创建数字标识
                 CreateText(BanData1, point10);
             }
         }
-
 
         void CreateLiningLine(List<Point3d> points, BanData banData) { //逆时针绘制，从左下角开始画
             if (points == null || points.Count != 4) return;
@@ -1137,11 +1141,18 @@ namespace CadPlugins {
         /// <param name="isNoraml">true表示长边在下边，短边在上边</param>
         void CreateText(BanData banData, Point3d leftDownPos, bool isNormal = true) {
             if (banData == null) return;
-            double textHeight = 800;
+            double textHeight = 500;
             DrawHelper.CreateText(banData.code.ToString() + "L", GetCenter(banData, leftDownPos, textHeight, isNormal), textHeight, "标注1");
         }
 
-
+        /// <summary>
+        /// 计算文字标注的中心点位置
+        /// </summary>
+        /// <param name="banData"></param>
+        /// <param name="initPos"></param>
+        /// <param name="textHeight"></param>
+        /// <param name="isNormal"></param>
+        /// <returns></returns>
         Point3d GetCenter(BanData banData, Point3d initPos, double textHeight, bool isNormal) {
             if (isNormal) {
                 var x = initPos.X + (banData.longEdge + banData.shortEdge) * 0.25 - textHeight * 0.5;
@@ -1176,6 +1187,41 @@ namespace CadPlugins {
         private void button2_Click(object sender, EventArgs e) {
             CalculateCuttingStyle2(bans);
             DrawCuttingStyles(results);
+        }
+        private void textBox7_TextChanged(object sender, EventArgs e) {
+            if (textBox7.Text != null)
+                initPosition = Convert.ToDouble(textBox7.Text);
+        }
+        private void MainForm_Load(object sender, EventArgs e) {
+            initPosition = Convert.ToDouble(textBox7.Text);
+            columeCount = Convert.ToDouble(textBox10.Text);
+            horizontalOffset = Convert.ToDouble(textBox9.Text);
+            verticalOffset = Convert.ToDouble(textBox11.Text);
+
+            horizontalLabelOffset = Convert.ToDouble(textBox2.Text);
+            verticalLabelOffset = Convert.ToDouble(textBox4.Text);
+        }
+        private void textBox10_TextChanged(object sender, EventArgs e) {
+            if (textBox10.Text != null)
+                columeCount = Convert.ToDouble(textBox10.Text);
+        }
+        private void textBox9_TextChanged(object sender, EventArgs e) {
+            if (textBox9.Text != null)
+                horizontalOffset = Convert.ToDouble(textBox9.Text);
+        }
+
+        private void textBox11_TextChanged(object sender, EventArgs e) {
+            if (textBox11.Text != null)
+                verticalOffset = Convert.ToDouble(textBox11.Text);
+        }
+        private void textBox2_TextChanged(object sender, EventArgs e) {
+            if (textBox2.Text != null)
+                horizontalLabelOffset = Convert.ToDouble(textBox2.Text);
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e) {
+            if (textBox4.Text != null)
+                verticalLabelOffset = Convert.ToDouble(textBox4.Text);
         }
 
         #endregion

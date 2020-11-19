@@ -112,3 +112,15 @@ E:\git\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CoreCompileInputs.cache
 E:\git\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CopyComplete
 E:\git\ZHYIntelligentDesign\obj\Debug\CadPlugins.dll
 E:\git\ZHYIntelligentDesign\obj\Debug\CadPlugins.pdb
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\bin\Debug\CadPlugins.dll
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\bin\Debug\CadPlugins.pdb
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\bin\Debug\Newtonsoft.Json.dll
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.csprojAssemblyReference.cache
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.Properties.Resources.resources
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.SBForm.resources
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.MainForm.resources
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.GenerateResource.cache
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CoreCompileInputs.cache
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CopyComplete
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.dll
+C:\Users\imtect\Desktop\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.pdb

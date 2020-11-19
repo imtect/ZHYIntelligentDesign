@@ -49,7 +49,7 @@ namespace CadPlugins {
         }
 
 
-        public static void DrawHorizontalDim(Point3d pt1, Point3d pt2, string text, double length) {
+        public static void DrawHorizontalDim(Point3d pt1, Point3d pt2, string text, double length, double textOffset = 1000) {
             using (Transaction trans = db.TransactionManager.StartTransaction()) {
 
                 DocumentLock documentLock = Application.DocumentManager.MdiActiveDocument.LockDocument();
@@ -67,6 +67,10 @@ namespace CadPlugins {
                 hdim.DimensionText = text;
                 hdim.Layer = "标注";
 
+                hdim.Dimexe = 500;
+
+                hdim.TextPosition = new Point3d((pt1.X + pt2.X) * 0.5, (pt1.Y + pt2.Y) * 0.5 + textOffset, 0);
+
                 modelSpace.AppendEntity(hdim);
                 trans.AddNewlyCreatedDBObject(hdim, true);
 
@@ -76,7 +80,7 @@ namespace CadPlugins {
             }
         }
 
-        public static void DrawVerticalDim(Point3d pt1, Point3d pt2, string text, double length) {
+        public static void DrawVerticalDim(Point3d pt1, Point3d pt2, string text, double length, double textOffset = 1000) {
             using (Transaction trans = db.TransactionManager.StartTransaction()) {
 
                 DocumentLock documentLock = Application.DocumentManager.MdiActiveDocument.LockDocument();
@@ -88,10 +92,14 @@ namespace CadPlugins {
                 hdim.XLine1Point = pt1;
                 hdim.XLine2Point = pt2;
                 hdim.Rotation = System.Math.PI / 2;
-                hdim.DimLinePoint = new Point3d(0, 5, 0);
+                hdim.DimLinePoint = new Point3d(0, length, 0);
                 hdim.DimensionStyle = db.Dimstyle;
                 hdim.DimensionText = text;
                 hdim.Layer = "标注";
+
+                hdim.Dimexe = 500;
+
+                hdim.TextPosition = new Point3d((pt1.X + pt2.X) * 0.5, (pt1.Y + pt2.Y) * 0.5 + textOffset, 0);
 
                 modelSpace.AppendEntity(hdim);
                 trans.AddNewlyCreatedDBObject(hdim, true);

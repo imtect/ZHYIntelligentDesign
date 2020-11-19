@@ -101,3 +101,4 @@ E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.csproj.CoreCompileInpu
 E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.csproj.CopyComplete
 E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.dll
 E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.pdb
+E:\01_Work\ZHY\ZHYIntelligentDesigne\obj\Debug\CadPlugins.csprojAssemblyReference.cache

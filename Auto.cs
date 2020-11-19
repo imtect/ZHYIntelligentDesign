@@ -400,8 +400,6 @@ namespace AutoBe
                 CreateText(angStr.ToString(), textP, 500, "0",-ang);
             }
 
-
-
         }
         public Entity GetAnEntity(string message, Type entType)
         {

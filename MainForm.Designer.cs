@@ -108,6 +108,9 @@
             this.Ring1 = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.textBox13 = new System.Windows.Forms.TextBox();
             groupBox1 = new System.Windows.Forms.GroupBox();
             groupBox2 = new System.Windows.Forms.GroupBox();
             groupBox3 = new System.Windows.Forms.GroupBox();
@@ -347,6 +350,9 @@
             groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             groupBox2.BackColor = System.Drawing.Color.Transparent;
+            groupBox2.Controls.Add(this.label37);
+            groupBox2.Controls.Add(this.textBox13);
+            groupBox2.Controls.Add(this.label36);
             groupBox2.Controls.Add(this.textBox11);
             groupBox2.Controls.Add(this.label30);
             groupBox2.Controls.Add(this.textBox10);
@@ -435,7 +441,7 @@
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(131, 107);
+            this.textBox7.Location = new System.Drawing.Point(160, 107);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(120, 23);
             this.textBox7.TabIndex = 29;
@@ -944,6 +950,33 @@
             this.label1.Size = new System.Drawing.Size(0, 12);
             this.label1.TabIndex = 0;
             // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(133, 110);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(28, 14);
+            this.label36.TabIndex = 36;
+            this.label36.Text = "X：";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(294, 110);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(28, 14);
+            this.label37.TabIndex = 38;
+            this.label37.Text = "Y：";
+            // 
+            // textBox13
+            // 
+            this.textBox13.Location = new System.Drawing.Point(321, 107);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(120, 23);
+            this.textBox13.TabIndex = 37;
+            this.textBox13.Text = "0";
+            this.textBox13.TextChanged += new System.EventHandler(this.textBox13_TextChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1049,5 +1082,8 @@
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.Label label36;
     }
 }

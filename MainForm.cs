@@ -864,22 +864,22 @@ namespace CadPlugins {
             length = comparer.longEdge;
             width = comparer.width;
 
-            //for (int i = 0; i < BanDatas.Count; i++) {
-            //    List<BanData> items = BanDatas[i];
+            for (int i = 0; i < BanDatas.Count; i++) {
+                List<BanData> items = BanDatas[i];
 
-            //    if (items.Count == 2) {
+                if (items.Count == 2) {
 
-            //        CreateTwoLining(items, initPos);
+                    CreateTwoLining(items, initPos);
 
-            //    } else if (items.Count == 3) {
+                } else if (items.Count == 3) {
 
-            //        CreateThreeLining(items, initPos);
-            //    }
+                    CreateThreeLining(items, initPos);
+                }
 
-            //    initPos = new Point3d(initX + (i + 1) * 15000, 0, 0);
-            //}
+                initPos = new Point3d(initX + (i + 1) * 15000, 0, 0);
+            }
 
-            CreateTwoLining(BanDatas[1], initPos);
+            //CreateTwoLining(BanDatas[1], initPos);
         }
 
 
@@ -896,9 +896,9 @@ namespace CadPlugins {
             CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 }, BanData0);
 
             //绘制标注
-            DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString(), -20);//长边
-            //DrawHelper.DrawVerticalDim(point00, point02, BanData0.width.ToString(), -20);//高度
-            DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString(), 20, false);//短边
+            DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString(), -800);//长边
+            DrawHelper.DrawVerticalDim(point00, point02, BanData0.width.ToString());//高度
+            DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString());//短边
 
             //创建数字标识
             CreateText(BanData0, point00);
@@ -913,12 +913,14 @@ namespace CadPlugins {
             CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
 
             //绘制标注
-            //DrawHelper.DrawHorizontalDim(point11, point10, BanData1.shortEdge.ToString(), -20);//长边
-            //DrawHelper.DrawVerticalDim(point11, point12, BanData1.width.ToString(), -20);//高度
-            //DrawHelper.DrawHorizontalDim(point12, point13, BanData1.longEdge.ToString(), 20);//短边
+            DrawHelper.DrawHorizontalDim(point11, point10, BanData1.shortEdge.ToString(), -800);//长边
+            DrawHelper.DrawVerticalDim(point11, point12, BanData1.width.ToString(), 800);//高度
+            DrawHelper.DrawHorizontalDim(point12, point13, BanData1.longEdge.ToString());//短边
 
             //创建数字标识
             CreateText(BanData1, point12, false);
+
+            DrawHelper.DrawHorizontalDim(point02, point12, length.ToString(), 1600);//总长
         }
 
         void CreateThreeLining(List<BanData> BanDatas, Point3d initPos) {
@@ -934,9 +936,9 @@ namespace CadPlugins {
             CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 }, BanData0);
 
             //绘制标注
-            //DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString(), -20);//长边
-            //DrawHelper.DrawVerticalDim(point00, point02, BanData0.longEdge.ToString(), -20);//高度
-            //DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString(), 20);//短边
+            DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString(), -800);//长边
+            DrawHelper.DrawVerticalDim(point00, point02, BanData0.longEdge.ToString());//高度
+            DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString());//短边
 
             //创建数字标识
             CreateText(BanData0, point00);
@@ -954,13 +956,14 @@ namespace CadPlugins {
 
 
             //绘制标注
-            //DrawHelper.DrawHorizontalDim(point21, point20, BanData2.shortEdge.ToString(), -20);//长边
-            //DrawHelper.DrawVerticalDim(point21, point22, BanData2.width.ToString(), -20);//高度
-            //DrawHelper.DrawHorizontalDim(point22, point23, BanData2.longEdge.ToString(), 20);//短边
+            DrawHelper.DrawHorizontalDim(point21, point20, BanData2.longEdge.ToString(), -800);//长边
+            DrawHelper.DrawVerticalDim(point21, point22, BanData2.width.ToString(), 800);//高度
+            DrawHelper.DrawHorizontalDim(point22, point23, BanData2.shortEdge.ToString());//短边
 
             //创建数字标识
             CreateText(BanData2, point22, false);
 
+            DrawHelper.DrawHorizontalDim(point02, point22, length.ToString(), 1600);//总长
 
             //中间
             BanData BanData1 = BanDatas[1];
@@ -979,8 +982,8 @@ namespace CadPlugins {
                 CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
 
                 //绘制标注
-                //DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString(), -20);//长边
-                //DrawHelper.DrawHorizontalDim(point13, point12, BanData1.shortEdge.ToString(), 20);//短边
+                DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString());//长边
+                DrawHelper.DrawHorizontalDim(point13, point12, BanData1.shortEdge.ToString(), -800);//短边
 
                 //创建数字标识
                 CreateText(BanData1, point13);
@@ -996,8 +999,8 @@ namespace CadPlugins {
                 CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
 
                 //绘制标注
-                //DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString(), -20);//长边
-                //DrawHelper.DrawHorizontalDim(point12, point13, BanData1.shortEdge.ToString(), 20);//短边
+                DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString());//长边
+                DrawHelper.DrawHorizontalDim(point12, point13, BanData1.shortEdge.ToString(), -800);//短边
 
                 //创建数字标识
                 CreateText(BanData1, point10);

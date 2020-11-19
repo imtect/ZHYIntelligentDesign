@@ -400,7 +400,7 @@
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(120, 23);
             this.textBox13.TabIndex = 37;
-            this.textBox13.Text = "50000";
+            this.textBox13.Text = "0";
             this.textBox13.TextChanged += new System.EventHandler(this.textBox13_TextChanged);
             // 
             // label36
@@ -548,7 +548,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(137, 29);
             this.button2.TabIndex = 8;
-            this.button2.Text = "生成切割类型";
+            this.button2.Text = "生成所有切割类型";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 

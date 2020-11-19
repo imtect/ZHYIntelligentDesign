@@ -717,44 +717,55 @@ namespace CadPlugins {
 
                 if (item1.width < comparer.width) continue; //暂时去除宽度不是正常宽度的部分，后期需要考虑斜率去处理
 
-                for (int j = i + 1; j < BanDatas.Count; j++) {
+                //if (handledBanData.Contains(item1.code)) continue;
 
-                    BanData item2 = BanDatas[j];
+                var banData = IsExistLining(BanDatas, comparer.longEdge - item1.longEdge);
 
-                    if (item2.width < comparer.width) continue;
+                //如果不存在能够满足的，单独切割
+                if (banData == null) {
+                    results.Add(new List<BanData>() { item1 });
+                } else {
+                    for (int j = i + 1; j < BanDatas.Count; j++) {
 
-                    double p1Lp2S = item1.longEdge + item2.shortEdge;
-                    double p1Sp2L = item1.shortEdge + item2.longEdge;
+                        BanData item2 = BanDatas[j];
 
-                    double maxLength = p1Lp2S >= p1Sp2L ? p1Lp2S : p1Sp2L; //获取最大值
+                        if (item2.width < comparer.width) continue;
 
-                    //最大值是否超过中幅版的长度，超过不满足
-                    if (maxLength > comparer.longEdge) {
-                        continue;
-                    } else {
-                        //不超过计算还剩多少
-                        double offset = comparer.longEdge - maxLength;
+                        //if (handledBanData.Contains(item2.code)) continue;
 
-                        //判断剩余的长边是否有小于该长度的，可以实现三个板子的拼接
-                        BanData isThreeLining = IsExitLining(BanDatas, offset);
+                        double p1Lp2S = item1.longEdge + item2.shortEdge;
+                        double p1Sp2L = item1.shortEdge + item2.longEdge;
 
-                        //满足两个排列组合
-                        if (isThreeLining == null) {
+                        double maxLength = p1Lp2S >= p1Sp2L ? p1Lp2S : p1Sp2L; //获取最大值
 
-                            if (IsValidate(item1, item2)) {
-                                results.Add(new List<BanData>() { item1, item2 });
+                        //最大值是否超过中幅版的长度，超过不满足
+                        if (maxLength > comparer.longEdge) {
+                            continue;
+                        } else {
+                            //不超过计算还剩多少
+                            double offset = comparer.longEdge - maxLength;
 
-                                handledBanData.Add(item1.code);
-                                handledBanData.Add(item2.code);
-                            }
-                        } else { //满足三个组合
+                            //判断剩余的长边是否有小于该长度的，可以实现三个板子的拼接
+                            BanData isThreeLining = IsExistLining(BanDatas, offset);
 
-                            if (IsValidate(item1, item2, isThreeLining)) {
-                                results.Add(new List<BanData>() { item1, item2, isThreeLining });
+                            //满足两个排列组合
+                            if (isThreeLining == null) {
 
-                                handledBanData.Add(item1.code);
-                                handledBanData.Add(item2.code);
-                                handledBanData.Add(isThreeLining.code);
+                                if (IsValidate(item1, item2)) {
+                                    results.Add(new List<BanData>() { item1, item2 });
+
+                                    handledBanData.Add(item1.code);
+                                    handledBanData.Add(item2.code);
+                                }
+                            } else { //满足三个组合
+
+                                if (IsValidate(item1, item2, isThreeLining)) {
+                                    results.Add(new List<BanData>() { item1, item2, isThreeLining });
+
+                                    handledBanData.Add(item1.code);
+                                    handledBanData.Add(item2.code);
+                                    handledBanData.Add(isThreeLining.code);
+                                }
                             }
                         }
                     }
@@ -802,7 +813,7 @@ namespace CadPlugins {
                         double offset = comparer.longEdge - maxLength;
 
                         //判断剩余的长边是否有小于该长度的，可以实现三个板子的拼接
-                        BanData isThreeLining = IsExitLining(BanDatas, offset);
+                        BanData isThreeLining = IsExistLining(BanDatas, offset);
 
                         //满足两个排列组合
                         if (isThreeLining == null) {
@@ -825,7 +836,7 @@ namespace CadPlugins {
 
                 List<BanData> data = results[i];
 
-                if (isExit(data, tempData)) continue;
+                if (isExist(data, tempData)) continue;
 
                 string str = string.Empty;
                 data.ForEach(k => {
@@ -843,7 +854,7 @@ namespace CadPlugins {
                 handledBanData.Clear();
         }
 
-        bool isExit(List<BanData> datas, List<int> tempData) {
+        bool isExist(List<BanData> datas, List<int> tempData) {
             foreach (var item in datas) {
                 if (tempData.Contains(item.code))
                     return true;
@@ -851,7 +862,7 @@ namespace CadPlugins {
             return false;
         }
 
-        BanData IsExitLining(List<BanData> BanDatas, double length) {
+        BanData IsExistLining(List<BanData> BanDatas, double length) {
             return BanDatas.Where(k => k.longEdge <= length).FirstOrDefault();
         }
 
@@ -859,8 +870,8 @@ namespace CadPlugins {
             if (item1 != null
                 && item2 != null
                 && handledBanData != null
-                && !handledBanData.Contains(item1.code)
-                && !handledBanData.Contains(item2.code))
+                && (!handledBanData.Contains(item1.code)
+                || !handledBanData.Contains(item2.code)))
                 return true;
             return false;
         }
@@ -870,9 +881,9 @@ namespace CadPlugins {
                 && item2 != null
                 && item3 != null
                 && handledBanData != null
-                && !handledBanData.Contains(item1.code)
-                && !handledBanData.Contains(item2.code)
-                && !handledBanData.Contains(item3.code))
+                && (!handledBanData.Contains(item1.code)
+                || !handledBanData.Contains(item2.code)
+                || !handledBanData.Contains(item3.code)))
                 return true;
             return false;
         }
@@ -929,15 +940,38 @@ namespace CadPlugins {
 
                 initPos = new Point3d(horPos, verPos, 0);
 
-                if (items.Count == 2) {
-                    CreateTwoLining(items, initPos);
+                if (items.Count == 1) {
+                    CreateOneLining(items);
+                } else if (items.Count == 2) {
+                    CreateTwoLining(items);
                 } else if (items.Count == 3) {
-                    CreateThreeLining(items, initPos);
+                    CreateThreeLining(items);
                 }
             }
         }
 
-        void CreateTwoLining(List<BanData> BanDatas, Point3d initPos) {
+        void CreateOneLining(List<BanData> banDatas) {
+            if (banDatas == null || banDatas.Count == 0) return;
+            
+            BanData BanData0 = banDatas[0];
+
+            Point3d point00 = initPos; //左下角点
+            Point3d point01 = new Point3d(initPos.X + BanData0.longEdge, initPos.Y, 0); //长边点
+            Point3d point02 = new Point3d(initPos.X, initPos.Y + width, 0); //高度
+            Point3d point03 = new Point3d(initPos.X + BanData0.shortEdge, initPos.Y + width, 0); //短边
+
+            CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 }, BanData0);
+
+            //绘制标注
+            DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString("N0"), -horizontalLabelOffset);//长边
+            DrawHelper.DrawVerticalDim(point00, point02, BanData0.width.ToString("N0"), -verticalLabelOffset);//高度
+            DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString("N0"), horizontalLabelOffset);//短边
+
+            //创建数字标识
+            CreateText(BanData0, point00);
+        }
+
+        void CreateTwoLining(List<BanData> BanDatas) {
             if (BanDatas == null || BanDatas.Count == 0) return;
 
             BanData BanData0 = BanDatas[0];
@@ -977,7 +1011,7 @@ namespace CadPlugins {
             DrawHelper.DrawHorizontalDim(point02, point12, length.ToString("N0"), 2 * horizontalLabelOffset);//总长
         }
 
-        void CreateThreeLining(List<BanData> BanDatas, Point3d initPos) {
+        void CreateThreeLining(List<BanData> BanDatas) {
             if (BanDatas == null || BanDatas.Count == 0) return;
             //最左边
             BanData BanData0 = BanDatas[0];

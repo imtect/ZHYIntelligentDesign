@@ -52,6 +52,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
@@ -73,10 +77,14 @@
             this.label25 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
             groupBox1 = new System.Windows.Forms.GroupBox();
             groupBox2 = new System.Windows.Forms.GroupBox();
             groupBox3 = new System.Windows.Forms.GroupBox();
@@ -314,6 +322,14 @@
             groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             groupBox2.BackColor = System.Drawing.Color.Transparent;
+            groupBox2.Controls.Add(this.textBox11);
+            groupBox2.Controls.Add(this.label20);
+            groupBox2.Controls.Add(this.textBox10);
+            groupBox2.Controls.Add(this.label19);
+            groupBox2.Controls.Add(this.textBox9);
+            groupBox2.Controls.Add(this.label18);
+            groupBox2.Controls.Add(this.textBox7);
+            groupBox2.Controls.Add(this.label17);
             groupBox2.Controls.Add(this.textBox4);
             groupBox2.Controls.Add(this.label15);
             groupBox2.Controls.Add(this.textBox2);
@@ -337,10 +353,44 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "外罐内衬里方案";
             // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(375, 132);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(120, 23);
+            this.textBox4.TabIndex = 15;
+            this.textBox4.Text = "800";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(258, 135);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(119, 14);
+            this.label15.TabIndex = 14;
+            this.label15.Text = "垂直标注偏移量：";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(132, 132);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(120, 23);
+            this.textBox2.TabIndex = 13;
+            this.textBox2.Text = "800";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(18, 135);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(119, 14);
+            this.label14.TabIndex = 12;
+            this.label14.Text = "水平标注偏移量：";
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(430, 29);
+            this.label13.Location = new System.Drawing.Point(418, 29);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(77, 14);
             this.label13.TabIndex = 11;
@@ -413,7 +463,7 @@
             // 
             // angleC
             // 
-            this.angleC.Location = new System.Drawing.Point(513, 26);
+            this.angleC.Location = new System.Drawing.Point(501, 26);
             this.angleC.Name = "angleC";
             this.angleC.Size = new System.Drawing.Size(120, 23);
             this.angleC.TabIndex = 2;
@@ -421,7 +471,7 @@
             // 
             // angleB
             // 
-            this.angleB.Location = new System.Drawing.Point(301, 26);
+            this.angleB.Location = new System.Drawing.Point(292, 26);
             this.angleB.Name = "angleB";
             this.angleB.Size = new System.Drawing.Size(120, 23);
             this.angleB.TabIndex = 2;
@@ -561,39 +611,73 @@
             this.label1.Size = new System.Drawing.Size(0, 12);
             this.label1.TabIndex = 0;
             // 
-            // label14
+            // label17
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(18, 135);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(77, 14);
-            this.label14.TabIndex = 12;
-            this.label14.Text = "一类缝宽：";
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(17, 68);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(119, 14);
+            this.label17.TabIndex = 16;
+            this.label17.Text = "下料图初始位置：";
             // 
-            // textBox2
+            // textBox7
             // 
-            this.textBox2.Location = new System.Drawing.Point(92, 132);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(120, 23);
-            this.textBox2.TabIndex = 13;
-            this.textBox2.Text = "2.5";
+            this.textBox7.Location = new System.Drawing.Point(132, 65);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(120, 23);
+            this.textBox7.TabIndex = 17;
+            this.textBox7.Text = "50000";
             // 
-            // textBox4
+            // textBox9
             // 
-            this.textBox4.Location = new System.Drawing.Point(292, 132);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(120, 23);
-            this.textBox4.TabIndex = 15;
-            this.textBox4.Text = "2.5";
+            this.textBox9.Location = new System.Drawing.Point(106, 99);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(120, 23);
+            this.textBox9.TabIndex = 19;
+            this.textBox9.Text = "15000";
             // 
-            // label15
+            // label18
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(218, 135);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(77, 14);
-            this.label15.TabIndex = 14;
-            this.label15.Text = "一类缝宽：";
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(18, 102);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(91, 14);
+            this.label18.TabIndex = 18;
+            this.label18.Text = "水平偏移量：";
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(501, 99);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(120, 23);
+            this.textBox10.TabIndex = 21;
+            this.textBox10.Text = "5";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(418, 102);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(63, 14);
+            this.label19.TabIndex = 20;
+            this.label19.Text = "排列数：";
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(292, 99);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(120, 23);
+            this.textBox11.TabIndex = 23;
+            this.textBox11.Text = "10000";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(229, 102);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(63, 14);
+            this.label20.TabIndex = 22;
+            this.label20.Text = "偏移量：";
             // 
             // MainForm
             // 
@@ -666,5 +750,13 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.Label label20;
     }
 }

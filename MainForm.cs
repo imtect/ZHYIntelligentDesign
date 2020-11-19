@@ -858,7 +858,6 @@ namespace CadPlugins {
         double length = 9680;
         double width = 2450;
         public void DrawCuttingStyles(List<List<BanData>> BanDatas) {
-
             initPos = new Point3d(0, 0, 0);
 
             length = comparer.longEdge;
@@ -866,20 +865,13 @@ namespace CadPlugins {
 
             for (int i = 0; i < BanDatas.Count; i++) {
                 List<BanData> items = BanDatas[i];
-
                 if (items.Count == 2) {
-
                     CreateTwoLining(items, initPos);
-
                 } else if (items.Count == 3) {
-
                     CreateThreeLining(items, initPos);
                 }
-
                 initPos = new Point3d(initX + (i + 1) * 15000, 0, 0);
             }
-
-            //CreateTwoLining(BanDatas[1], initPos);
         }
 
 

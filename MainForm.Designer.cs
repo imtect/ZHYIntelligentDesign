@@ -93,22 +93,24 @@
             this.label20 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.RingCircle = new System.Windows.Forms.Button();
             this.NumberC = new System.Windows.Forms.TextBox();
-            this.Ring6 = new System.Windows.Forms.TextBox();
+            this.Beam7 = new System.Windows.Forms.TextBox();
             this.NumberB = new System.Windows.Forms.TextBox();
-            this.Ring5 = new System.Windows.Forms.TextBox();
-            this.Ring3 = new System.Windows.Forms.TextBox();
-            this.Ring7 = new System.Windows.Forms.TextBox();
+            this.Beam4 = new System.Windows.Forms.TextBox();
+            this.Beam6 = new System.Windows.Forms.TextBox();
+            this.Beam3 = new System.Windows.Forms.TextBox();
+            this.Beam8 = new System.Windows.Forms.TextBox();
             this.NumberA = new System.Windows.Forms.TextBox();
-            this.Ring4 = new System.Windows.Forms.TextBox();
+            this.Beam5 = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
-            this.Ring2 = new System.Windows.Forms.TextBox();
+            this.Beam2 = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.Ring1 = new System.Windows.Forms.TextBox();
+            this.Beam1 = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             groupBox1 = new System.Windows.Forms.GroupBox();
@@ -759,22 +761,24 @@
             groupBox4.Controls.Add(this.label20);
             groupBox4.Controls.Add(this.label14);
             groupBox4.Controls.Add(this.label28);
+            groupBox4.Controls.Add(this.label38);
             groupBox4.Controls.Add(this.label19);
             groupBox4.Controls.Add(this.label15);
             groupBox4.Controls.Add(this.RingCircle);
             groupBox4.Controls.Add(this.NumberC);
-            groupBox4.Controls.Add(this.Ring6);
+            groupBox4.Controls.Add(this.Beam7);
             groupBox4.Controls.Add(this.NumberB);
-            groupBox4.Controls.Add(this.Ring5);
-            groupBox4.Controls.Add(this.Ring3);
-            groupBox4.Controls.Add(this.Ring7);
+            groupBox4.Controls.Add(this.Beam4);
+            groupBox4.Controls.Add(this.Beam6);
+            groupBox4.Controls.Add(this.Beam3);
+            groupBox4.Controls.Add(this.Beam8);
             groupBox4.Controls.Add(this.NumberA);
-            groupBox4.Controls.Add(this.Ring4);
+            groupBox4.Controls.Add(this.Beam5);
             groupBox4.Controls.Add(this.label21);
-            groupBox4.Controls.Add(this.Ring2);
+            groupBox4.Controls.Add(this.Beam2);
             groupBox4.Controls.Add(this.label26);
             groupBox4.Controls.Add(this.label18);
-            groupBox4.Controls.Add(this.Ring1);
+            groupBox4.Controls.Add(this.Beam1);
             groupBox4.Controls.Add(this.label17);
             groupBox4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             groupBox4.ForeColor = System.Drawing.Color.White;
@@ -797,11 +801,11 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(430, 58);
+            this.label20.Location = new System.Drawing.Point(15, 87);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(63, 14);
             this.label20.TabIndex = 11;
-            this.label20.Text = "六环梁长";
+            this.label20.Text = "七环梁长";
             // 
             // label14
             // 
@@ -821,14 +825,23 @@
             this.label28.TabIndex = 10;
             this.label28.Text = "二类纵梁个数";
             // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(16, 58);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(63, 14);
+            this.label38.TabIndex = 10;
+            this.label38.Text = "四环梁长";
+            // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(218, 58);
+            this.label19.Location = new System.Drawing.Point(430, 58);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(63, 14);
             this.label19.TabIndex = 10;
-            this.label19.Text = "五环梁长";
+            this.label19.Text = "六环梁长";
             // 
             // label15
             // 
@@ -861,13 +874,13 @@
             this.NumberC.TabIndex = 2;
             this.NumberC.Text = "24";
             // 
-            // Ring6
+            // Beam7
             // 
-            this.Ring6.Location = new System.Drawing.Point(513, 55);
-            this.Ring6.Name = "Ring6";
-            this.Ring6.Size = new System.Drawing.Size(120, 23);
-            this.Ring6.TabIndex = 2;
-            this.Ring6.Text = "34000";
+            this.Beam7.Location = new System.Drawing.Point(98, 84);
+            this.Beam7.Name = "Beam7";
+            this.Beam7.Size = new System.Drawing.Size(120, 23);
+            this.Beam7.TabIndex = 2;
+            this.Beam7.Text = "34000";
             // 
             // NumberB
             // 
@@ -877,29 +890,37 @@
             this.NumberB.TabIndex = 2;
             this.NumberB.Text = "48";
             // 
-            // Ring5
+            // Beam4
             // 
-            this.Ring5.Location = new System.Drawing.Point(301, 55);
-            this.Ring5.Name = "Ring5";
-            this.Ring5.Size = new System.Drawing.Size(120, 23);
-            this.Ring5.TabIndex = 2;
-            this.Ring5.Text = "29000";
+            this.Beam4.Location = new System.Drawing.Point(92, 55);
+            this.Beam4.Name = "Beam4";
+            this.Beam4.Size = new System.Drawing.Size(120, 23);
+            this.Beam4.TabIndex = 2;
+            this.Beam4.Text = "16000";
             // 
-            // Ring3
+            // Beam6
             // 
-            this.Ring3.Location = new System.Drawing.Point(513, 26);
-            this.Ring3.Name = "Ring3";
-            this.Ring3.Size = new System.Drawing.Size(120, 23);
-            this.Ring3.TabIndex = 2;
-            this.Ring3.Text = "9500";
+            this.Beam6.Location = new System.Drawing.Point(513, 55);
+            this.Beam6.Name = "Beam6";
+            this.Beam6.Size = new System.Drawing.Size(120, 23);
+            this.Beam6.TabIndex = 2;
+            this.Beam6.Text = "29000";
             // 
-            // Ring7
+            // Beam3
             // 
-            this.Ring7.Location = new System.Drawing.Point(92, 84);
-            this.Ring7.Name = "Ring7";
-            this.Ring7.Size = new System.Drawing.Size(120, 23);
-            this.Ring7.TabIndex = 2;
-            this.Ring7.Text = "38000";
+            this.Beam3.Location = new System.Drawing.Point(513, 26);
+            this.Beam3.Name = "Beam3";
+            this.Beam3.Size = new System.Drawing.Size(120, 23);
+            this.Beam3.TabIndex = 2;
+            this.Beam3.Text = "9500";
+            // 
+            // Beam8
+            // 
+            this.Beam8.Location = new System.Drawing.Point(297, 84);
+            this.Beam8.Name = "Beam8";
+            this.Beam8.Size = new System.Drawing.Size(120, 23);
+            this.Beam8.TabIndex = 2;
+            this.Beam8.Text = "38000";
             // 
             // NumberA
             // 
@@ -909,30 +930,30 @@
             this.NumberA.TabIndex = 2;
             this.NumberA.Text = "24";
             // 
-            // Ring4
+            // Beam5
             // 
-            this.Ring4.Location = new System.Drawing.Point(92, 55);
-            this.Ring4.Name = "Ring4";
-            this.Ring4.Size = new System.Drawing.Size(120, 23);
-            this.Ring4.TabIndex = 2;
-            this.Ring4.Text = "22990";
+            this.Beam5.Location = new System.Drawing.Point(304, 55);
+            this.Beam5.Name = "Beam5";
+            this.Beam5.Size = new System.Drawing.Size(120, 23);
+            this.Beam5.TabIndex = 2;
+            this.Beam5.Text = "22990";
             // 
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(18, 87);
+            this.label21.Location = new System.Drawing.Point(223, 87);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(63, 14);
             this.label21.TabIndex = 1;
-            this.label21.Text = "七环梁长";
+            this.label21.Text = "八环梁长";
             // 
-            // Ring2
+            // Beam2
             // 
-            this.Ring2.Location = new System.Drawing.Point(301, 26);
-            this.Ring2.Name = "Ring2";
-            this.Ring2.Size = new System.Drawing.Size(120, 23);
-            this.Ring2.TabIndex = 2;
-            this.Ring2.Text = "3000";
+            this.Beam2.Location = new System.Drawing.Point(301, 26);
+            this.Beam2.Name = "Beam2";
+            this.Beam2.Size = new System.Drawing.Size(120, 23);
+            this.Beam2.TabIndex = 2;
+            this.Beam2.Text = "3000";
             // 
             // label26
             // 
@@ -946,19 +967,19 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(18, 58);
+            this.label18.Location = new System.Drawing.Point(218, 58);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(63, 14);
             this.label18.TabIndex = 1;
-            this.label18.Text = "四环梁长";
+            this.label18.Text = "五环梁长";
             // 
-            // Ring1
+            // Beam1
             // 
-            this.Ring1.Location = new System.Drawing.Point(92, 26);
-            this.Ring1.Name = "Ring1";
-            this.Ring1.Size = new System.Drawing.Size(120, 23);
-            this.Ring1.TabIndex = 2;
-            this.Ring1.Text = "750";
+            this.Beam1.Location = new System.Drawing.Point(92, 26);
+            this.Beam1.Name = "Beam1";
+            this.Beam1.Size = new System.Drawing.Size(120, 23);
+            this.Beam1.TabIndex = 2;
+            this.Beam1.Text = "750";
             // 
             // label17
             // 
@@ -1054,15 +1075,15 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button RingCircle;
-        private System.Windows.Forms.TextBox Ring6;
-        private System.Windows.Forms.TextBox Ring5;
-        private System.Windows.Forms.TextBox Ring3;
-        private System.Windows.Forms.TextBox Ring7;
-        private System.Windows.Forms.TextBox Ring4;
+        private System.Windows.Forms.TextBox Beam7;
+        private System.Windows.Forms.TextBox Beam6;
+        private System.Windows.Forms.TextBox Beam3;
+        private System.Windows.Forms.TextBox Beam8;
+        private System.Windows.Forms.TextBox Beam5;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.TextBox Ring2;
+        private System.Windows.Forms.TextBox Beam2;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox Ring1;
+        private System.Windows.Forms.TextBox Beam1;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label28;
@@ -1085,5 +1106,7 @@
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.TextBox textBox13;
         private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.TextBox Beam4;
     }
 }

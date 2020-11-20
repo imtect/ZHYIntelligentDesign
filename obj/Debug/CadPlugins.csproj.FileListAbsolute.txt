@@ -136,3 +136,15 @@ E:\01_Work\ZHY\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.cs
 E:\01_Work\ZHY\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CopyComplete
 E:\01_Work\ZHY\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.dll
 E:\01_Work\ZHY\ZHYIntelligentDesign\ZHYIntelligentDesign\obj\Debug\CadPlugins.pdb
+D:\GIT\ZHYIntelligentDesign\bin\Debug\CadPlugins.dll
+D:\GIT\ZHYIntelligentDesign\bin\Debug\CadPlugins.pdb
+D:\GIT\ZHYIntelligentDesign\bin\Debug\Newtonsoft.Json.dll
+D:\GIT\ZHYIntelligentDesign\bin\Debug\System.Data.SQLite.dll
+D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.Properties.Resources.resources
+D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.SBForm.resources
+D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.MainForm.resources
+D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.GenerateResource.cache
+D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CoreCompileInputs.cache
+D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CopyComplete
+D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.dll
+D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.pdb

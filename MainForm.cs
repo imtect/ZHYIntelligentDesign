@@ -72,10 +72,12 @@ namespace CadPlugins {
         public double ring5;
         public double ring6;
         public double ring7;
+        public double ring8;
 
         public int numA;
         public int numB;
         public int numC;
+        public int numAll;
 
 
         #endregion
@@ -197,12 +199,6 @@ namespace CadPlugins {
 
             auto.AddBlock("aaaa", ents);
             auto.AddBlockReference("aaaa", Point3d.Origin, 0);
-
-
-
-
-
-
 
         }
 
@@ -626,30 +622,79 @@ namespace CadPlugins {
         #endregion
         #region 顶梁框架
         public void RingInit() {
-            ring1 = Convert.ToDouble(Ring1.Text);
-            ring2 = Convert.ToDouble(Ring2.Text);
-            ring3 = Convert.ToDouble(Ring3.Text);
-            ring4 = Convert.ToDouble(Ring4.Text);
-            ring5 = Convert.ToDouble(Ring5.Text);
-            ring6 = Convert.ToDouble(Ring6.Text);
-            ring7 = Convert.ToDouble(Ring7.Text);
+            ring1 = Convert.ToDouble(Beam1.Text);
+            ring2 = Convert.ToDouble(Beam2.Text);
+            ring3 = Convert.ToDouble(Beam3.Text);
+            ring4 = Convert.ToDouble(Beam4.Text);
+            ring5 = Convert.ToDouble(Beam5.Text);
+            ring6 = Convert.ToDouble(Beam6.Text);
+            ring7 = Convert.ToDouble(Beam7.Text);
+            ring8= Convert.ToDouble(Beam8.Text);
             numA = Convert.ToInt32(NumberA.Text);
             numB = Convert.ToInt32(NumberB.Text);
             numC = Convert.ToInt32(NumberC.Text);
-
+            numAll = numA + numB + numC;
 
         }
         public void CreateABeam() {
+            double delAng = Math.PI * 2 / numAll;
+            for(int i = 0; i < numA; i++)
+            {
+                double ang = i * (2 * Math.PI / numA);
+                CreateOneBeam(ring1, ring8, center, ang);
+            }
+            for(int i = 0; i < numB; i++)
+            {
+                double ang = i * (2 * Math.PI / numB)+delAng;
+                CreateOneBeam(ring3, ring8, center, ang);
+            }
+            for (int i = 0; i < numC; i++)
+            {
+                double ang = i * (2 * Math.PI / numC) +2* delAng;
+                CreateOneBeam(ring4, ring8, center, ang);
+            }
+
 
         }
-
         public void CreateOneBeam(double st, double ed, Point3d center, double ang) {
             Point3d stP = new Point3d(st * Math.Cos(ang), st * Math.Sin(ang), 0);
             Point3d edP = new Point3d(ed * Math.Cos(ang), ed * Math.Sin(ang), 0);
-            auto.CreateLine(stP, edP, "0");
+            Line l= auto.CreateLine(stP, edP, "0");
+            CreateBounder(l, 150, ang);
 
+        }
+        public void CreateBounder(Line line,double width,double ang)
+        {
+            Point2d p1 = new Point2d(line.StartPoint.X + width / 2 * Math.Sin(ang), line.StartPoint.Y - width / 2 * Math.Cos(ang));
+            Point2d p2=new Point2d(line.EndPoint.X + width / 2 * Math.Sin(ang), line.EndPoint.Y - width / 2 * Math.Cos(ang));
+            Point2d p3 = new Point2d(line.StartPoint.X -width / 2 * Math.Sin(ang), line.StartPoint.Y + width / 2 * Math.Cos(ang));
+            Point2d p4 = new Point2d(line.EndPoint.X - width / 2 * Math.Sin(ang), line.EndPoint.Y + width / 2 * Math.Cos(ang));
+            List<Point2d> point2s = new List<Point2d>();
+            point2s.Add(p1);
+            point2s.Add(p2);
+            point2s.Add(p4);
+            point2s.Add(p3);
+            point2s.Add(p1);
+            auto.CreatePLine(point2s,"0");
+        }
 
-
+        public void CreateOneCircleRing(Point3d center, double r,double width)
+        {
+            auto.CreateCircle(center, r, "0");
+            auto.CreateCircle(center, r - width / 2, "0");
+            auto.CreateCircle(center, r + width / 2, "0");
+        }
+        public void CreateCircleRings(Point3d center,double width)
+        {
+            CreateOneCircleRing(center, ring1, 150);
+            CreateOneCircleRing(center, ring2, 150);
+            CreateOneCircleRing(center, ring3, 150);
+            CreateOneCircleRing(center, ring4, 150);
+            CreateOneCircleRing(center, ring5, 150);
+            CreateOneCircleRing(center, ring6, 150);
+            CreateOneCircleRing(center, ring7, 150);
+            CreateOneCircleRing(center, ring8, 150);
+            
         }
 
 
@@ -1207,7 +1252,9 @@ namespace CadPlugins {
         }
 
         private void RingCircle_Click(object sender, EventArgs e) {
-
+            RingInit();
+            CreateABeam();
+            CreateCircleRings(center,150);
         }
 
 

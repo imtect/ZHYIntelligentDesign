@@ -93,14 +93,12 @@ namespace AutoBe
                     }
                     else
                         acEd.WriteMessage("块创建失败");
-
                 }
             }
             catch
             {
                 acEd.WriteMessage(blockName+"块不存在");
-            }
-            
+            }            
         }
 
 

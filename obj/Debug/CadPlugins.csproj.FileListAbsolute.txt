@@ -149,3 +149,4 @@ D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CopyComplete
 D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.dll
 D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.pdb
 D:\GIT\ZHYIntelligentDesign\obj\Debug\CadPlugins.csprojAssemblyReference.cache
+E:\git\ZHYIntelligentDesign\obj\Debug\CadPlugins.csprojAssemblyReference.cache

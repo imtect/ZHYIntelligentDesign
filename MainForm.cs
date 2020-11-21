@@ -347,8 +347,8 @@ namespace CadPlugins {
                     auto.CreateFourText(numx.ToString(), p, center);
                     BanData ban = new BanData();
                     ban.code = numx;
-                    ban.shortEdge = GetPoint_X(r, y - b) - xh;
-                    ban.longEdge = x - xh;
+                    ban.longEdge = GetPoint_X(r, y - b) - xh;
+                    ban.shortEdge = x - xh;
                     ban.width = b;
                     ban.type = BanType.AbnormalBan;
                     ban.count = 4;

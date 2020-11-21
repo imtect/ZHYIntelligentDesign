@@ -1,6 +1,7 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 //using System;
 using System.Collections.Generic;
@@ -11,7 +12,13 @@ using System.Threading.Tasks;
 namespace CadPlugins {
     public class DrawHelper {
 
-        private static Database db = HostApplicationServices.WorkingDatabase;
+        //private static Database db = HostApplicationServices.WorkingDatabase;
+        private static Document acDoc = Application.DocumentManager.MdiActiveDocument;
+        private static Editor acEd=acDoc.Editor;
+        private static Database db=acDoc.Database;
+       
+       
+
 
         public Line CreateLine(Point3d p1, Point3d p2, string layer) {
             Line line = new Line(p1, p2);
@@ -110,9 +117,48 @@ namespace CadPlugins {
             }
         }
 
-
-
-
-
+        public static void SerchAndInsertBlock(string blockNamePath,bool isCover,bool isCreate)
+        {
+            Point3d pt = new Point3d(0, 0, 0);
+            using (Database blkDb = new Database(false, true))
+            {
+                blkDb.ReadDwgFile(blockNamePath, System.IO.FileShare.Read, true, null);
+                blkDb.CloseInput(true);
+                string blockName = System.IO.Path.GetFileNameWithoutExtension(blockNamePath);
+                using(Transaction trans = db.TransactionManager.StartTransaction())
+                {
+                    DocumentLock docLock= acDoc.LockDocument();
+                    BlockTable bt = trans.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
+                    if (bt.Has(blockName)&&isCover)
+                    {
+                        ObjectId blkid = acDoc.Database.Insert(blockName, blkDb, false);
+                        if (isCreate)
+                        {
+                            BlockTableRecord btr = trans.GetObject(db.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
+                            using (BlockReference br = new BlockReference(pt, blkid))
+                            {
+                                btr.AppendEntity(br);
+                                trans.AddNewlyCreatedDBObject(br, true);
+                            }
+                        }
+                    }
+                    else if (!bt.Has(blockName))
+                    {
+                        ObjectId blkid = db.Insert(blockName, blkDb, false);
+                        if (isCreate)
+                        {
+                            BlockTableRecord btr = trans.GetObject(db.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
+                            using (BlockReference br = new BlockReference(pt, blkid)) 
+                            {
+                                btr.AppendEntity(br);
+                                trans.AddNewlyCreatedDBObject(br, true);
+                            }
+                        }
+                    }
+                    trans.Commit();
+                    docLock.Dispose();
+                }               
+            }
+        }
     }
 }

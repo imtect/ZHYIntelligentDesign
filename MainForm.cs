@@ -24,67 +24,21 @@ namespace CadPlugins {
     public partial class MainForm : Form {
 
 
-        #region field
+        #region 参数
+        # region 衬里方案参数
         Auto auto = new Auto();
-        public double R;
-        public double r;
-        public double a;
-        public double D;
-        public double d;
-        public double ringWidth;
-        public double ringLap;
-        public int ringNum;
-        public double aMin;
-        public double aMax;
-        public double step;
-        public double b;
-        public double lap;
-        public double xlineLengths;
-        public double ylineLengths;
-        public int four;
-        public int three;
-        public int two;
-        public int one;
-        public string fourName;
-        public string threeName;
-        public string twoName;
-        public string oneName;
-        public int numx;
-        public int numy;
-        public Point3d center;
-        public double delDe;
-        public int numBo;
-        public List<double> angs;
-        public double anga;
-        public int numa;
-        public double angb;
-        public int numb;
-        public double angc;
-        public int numc;
+        public double R,r,a,D,d,ringWidth,ringLap,aMin,aMax,step,b,lap,xlineLengths,ylineLengths, anga, angb, angc, delDe;
+        public int ringNum,four,three,two,one, numa, numb, numc, numx, numy, numBo;
+        public string fourName,threeName,twoName,oneName;        
+        public Point3d center;            
+        public List<double> angs;        
         public List<BanData> bans;
         public Dictionary<int, double> banUpLength;
-        #region 顶拱方案参数
-
-        public double ring1;
-        public double ring2;
-        public double ring3;
-        public double ring4;
-        public double ring5;
-        public double ring6;
-        public double ring7;
-        public double ring8;
-
-        public int numA;
-        public int numB;
-        public int numC;
-        public int numAll;
-
-
         #endregion
-
-
-
-
+        #region 顶拱方案参数
+        public double ring1,ring2,ring3,ring4,ring5,ring6,ring7,ring8;
+        public int numA,numB,numC,numAll;
+        #endregion
         #endregion
         public MainForm() {
             InitializeComponent();
@@ -193,8 +147,7 @@ namespace CadPlugins {
             auto.CreateBlockByCircle("bf", R - 300, 1, 7.5, c.Center, 1800, true);
             auto.CreateCircle(c.Center, R - 350, "0");
             auto.CreateBlockByCircle("cf", R, 7.75, 10, c.Center, 1000, true);
-            //auto.CreateCircle(c.Center, R - 350, "0");
-
+            
             List<Entity> ents = GetAFengBlock(R);
 
             auto.AddBlock("aaaa", ents);
@@ -696,8 +649,6 @@ namespace CadPlugins {
             CreateOneCircleRing(center, ring8, 150);
             
         }
-
-
 
         #endregion
 

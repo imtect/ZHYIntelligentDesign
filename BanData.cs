@@ -20,6 +20,17 @@ namespace CadPlugins
         BanLining, //中幅板
         ThreeQuartersBan, //四分之三板
         HalfBan, //二分之一板
+        QuarterBane,
         AbnormalBan //异形板
+    }
+
+    public enum BanPosType
+    {
+        Normal,
+        Left,
+        ShortMiddle, //短边在下
+        LongMiddle, //长边在下
+        ShortRight, //短边在下
+        LongRight //长边在下
     }
 }

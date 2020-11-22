@@ -25,7 +25,7 @@ namespace CadPlugins {
         #region 参数
         # region 衬里方案参数
         Auto auto = new Auto();
-        public double R,r,a,D,d,ringWidth,ringLap,aMin,aMax,step,b,lap,xlineLengths,ylineLengths, anga, angb, angc, delDe;
+        public double R,r,a,D,d,ringWidth,ringLap,aMin,aMax,step,b,lap,xlineLengths,ylineLengths, anga, angb, angc, delDe,stAng;
         public int ringNum,four,three,two,one, numa, numb, numc, numx, numy, numBo;
         public string fourName,threeName,twoName,oneName;        
         public Point3d center;            
@@ -50,6 +50,7 @@ namespace CadPlugins {
             aMin = Convert.ToDouble(AMin.Text);
             aMax = Convert.ToDouble(AMax.Text);
             step = Convert.ToDouble(StepL.Text);
+            stAng= Convert.ToDouble(StartAng.Text)*Math.PI/180;
             xlineLengths = 0;
             ylineLengths = 0;
             four = 0;
@@ -68,6 +69,8 @@ namespace CadPlugins {
             angc = Convert.ToDouble(angleC.Text);
             numc = (int)(360 / angc);
             bans = new List<BanData>();
+            DrawHelper.SerchAndInsertBlock("D:\\deskTop\\Test1.dwg", true, false);
+            
         }
         public void DrawingLining()
         {
@@ -101,7 +104,7 @@ namespace CadPlugins {
         {
 
 
-            Circle c = auto.GetAnEntity("请选择一个圆", typeof(Circle)) as Circle;
+            Arc c = auto.GetAnEntity("请选择一个圆", typeof(Arc)) as Arc;
             double R = c.Radius;
             auto.CreateBlockByCircle("af", R - 500, 1, 2.5, c.Center, 0);
             auto.CreateCircle(c.Center, R - 500, "0");
@@ -160,9 +163,13 @@ namespace CadPlugins {
         public void BasicCircle(Point3d center, double cr)
         {
             auto.CreateLayer("F");
-            auto.CreateCircle(center, cr, "F");
+            DrawHelper.CreateArc(center, cr, 0, Math.PI);
+            DrawHelper.CreateArc(center, cr, Math.PI, Math.PI * 2);
+            //auto.CreateCircle(center, cr, "F");
             double cR = cr + ringWidth - ringLap;
-            auto.CreateCircle(center, cR, "F");
+            //auto.CreateCircle(center, cR, "F");
+            DrawHelper.CreateArc(center, cR, 0, Math.PI);
+            DrawHelper.CreateArc(center, cR, Math.PI, Math.PI * 2);
         }
         public Line CreateCircleLine(double R, double r, double ang)
         {
@@ -546,6 +553,21 @@ namespace CadPlugins {
         {
             Point3d tkOriPoint = new Point3d(-61902, -63911, 0);
             auto.AddBlockReference("tk", tkOriPoint, 0);
+            Point3d p1 = new Point3d(79648, 17050, 0);
+            DrawHelper.CreateText(anga.ToString(), p1, 800, "0");
+            Point3d p2 = new Point3d(88640, 17100, 0);
+            DrawHelper.CreateText(angb.ToString(), p2, 800, "0");
+            Point3d p3 = new Point3d(94075, 32360, 0);
+            DrawHelper.CreateText(angc.ToString(), p3, 800, "0");
+            Point3d p4 = new Point3d(71755 ,15520 , 0);
+            DrawHelper.CreateText(numa.ToString(), p4, 800, "0");
+            Point3d p5 = new Point3d(97090, 17135, 0);
+            DrawHelper.CreateText(numb.ToString(), p5, 800, "0");
+            Point3d p6 = new Point3d(91125, 30588, 0);
+            DrawHelper.CreateText(numc.ToString(), p6, 800, "0");
+
+
+
         }
         public double GetPoint_X(double r, double y)
         {
@@ -571,6 +593,7 @@ namespace CadPlugins {
             numB = Convert.ToInt32(NumberB.Text);
             numC = Convert.ToInt32(NumberC.Text);
             numAll = numA + numB + numC;
+            DrawHelper.SerchAndInsertBlock("D:\\deskTop\\Test1.dwg", true, false);
 
         }
         public void CreateABeam() {
@@ -594,8 +617,8 @@ namespace CadPlugins {
 
         }
         public void CreateOneBeam(double st, double ed, Point3d center, double ang) {
-            Point3d stP = new Point3d(st * Math.Cos(ang), st * Math.Sin(ang), 0);
-            Point3d edP = new Point3d(ed * Math.Cos(ang), ed * Math.Sin(ang), 0);
+            Point3d stP = new Point3d(st * Math.Cos(ang)+center.X, st * Math.Sin(ang) + center.Y, 0);
+            Point3d edP = new Point3d(ed * Math.Cos(ang) + center.X, ed * Math.Sin(ang) + center.Y, 0);
             Line l= auto.CreateLine(stP, edP, "0");
             CreateBounder(l, 150, ang);
 
@@ -633,11 +656,17 @@ namespace CadPlugins {
             CreateOneCircleRing(center, ring8, 150);
             
         }
-
+        private void CreateNotes()
+        {
+            Point3d pst = new Point3d(center.X + ring6 * Math.Cos(Math.PI * 60 / 180), center.Y + ring6 * Math.Sin(Math.PI * 60 / 180), 0);
+            Point3d ped=new Point3d(center.X+5000 + ring8 * Math.Cos(Math.PI * 60 / 180), center.Y +5000+ ring8 * Math.Sin(Math.PI * 60 / 180), 0);
+            MLeader m= DrawHelper.CreateMLeader(pst, ped, "环梁");
+            DrawHelper.AddToModelSpace(m);
+        }
         #endregion
         #region Calculate
         //例子
-        public List<BanData> BanDatas = new List<BanData>() {
+        public List<BanData> m_BanDatas = new List<BanData>() {
             new BanData(){code = 1, shortEdge = 3213,longEdge = 3230,width = 2450,type = BanType.AbnormalBan },
             new BanData(){code = 2, shortEdge = 1867,longEdge = 2008,width = 2450,type = BanType.AbnormalBan },
             new BanData(){code = 3, shortEdge = 1585,longEdge = 1870,width = 2450,type = BanType.AbnormalBan },
@@ -654,7 +683,7 @@ namespace CadPlugins {
             new BanData(){code = 14,shortEdge = 3296,longEdge = 6081,width = 2450,type = BanType.AbnormalBan },
             new BanData(){code = 15,shortEdge = 2386,longEdge = 5755,width = 2450,type = BanType.AbnormalBan },
             new BanData(){code = 16,shortEdge = 4211,longEdge = 8472,width = 2450,type = BanType.AbnormalBan },
-            new BanData(){code = 17,shortEdge = 0   ,longEdge = 3085,width = 2450,type = BanType.AbnormalBan },
+            new BanData(){code = 17,shortEdge = 0   ,longEdge = 3085,width = 1394,type = BanType.AbnormalBan },
             new BanData(){code = 18,shortEdge = 1378,longEdge = 2283,width = 2450,type = BanType.AbnormalBan },
             new BanData(){code = 19,shortEdge = 2269,longEdge = 3008,width = 2450,type = BanType.AbnormalBan },
             new BanData(){code = 20,shortEdge = 2997,longEdge = 3579,width = 2450,type = BanType.AbnormalBan },
@@ -663,232 +692,401 @@ namespace CadPlugins {
             new BanData(){code = 23,shortEdge = 4277,longEdge = 4417,width = 2450,type = BanType.AbnormalBan },
             new BanData(){code = 97,shortEdge = 9680,longEdge = 9680,width = 2450,type = BanType.BanLining },
         };
-
+        //计算一个板子可能的组合情况
+        private List<List<BanData>> tempResult = new List<List<BanData>>();
+        //最终确定的组合
+        private List<List<BanData>> allResults = new List<List<BanData>>();
+        //最终确定的组合
+        private Dictionary<BanData, List<List<BanData>>> results = new Dictionary<BanData, List<List<BanData>>>();
         //已经处理的数据
         private List<int> handledBanData = new List<int>();
-
-        //可能的组合
-        private List<List<BanData>> results = new List<List<BanData>>();
-
         //中幅板的数据，以中幅板作为模板进行切割下料
-        BanData comparer;
+        //private BanData curComparer;
 
-        public void CalculateCuttingStyle(List<BanData> BanDatas) {
-            if (BanDatas == null || BanDatas.Count == 0) return;
+        List<BanData> tempBanDatas = new List<BanData>();
 
-            ClearDatas();
 
-            //中幅板宽度
-            comparer = BanDatas.Where(k => k.type == BanType.BanLining).FirstOrDefault();
+        void Calculate()
+        {
+            //以中幅板计算
+            CalculateCuttingStyle(bans, GetComparar(BanType.BanLining));
 
-            if (comparer == null) {
-                comparer = new BanData() { code = 10000, shortEdge = a, longEdge = a, width = b, type = BanType.BanLining };
+            //以四分之三计算
+            if (tempBanDatas != null && tempBanDatas.Count != 0)
+            {
+                CalculateCuttingStyle(tempBanDatas, GetComparar(BanType.ThreeQuartersBan));
             }
+            //以二分之一计算
+            if (tempBanDatas != null && tempBanDatas.Count != 0)
+            {
+                CalculateCuttingStyle(tempBanDatas, GetComparar(BanType.HalfBan));
+            }
+        }
 
-            //排序
-            BanDatas = BanDatas.Where(k => k.type != BanType.BanLining).OrderByDescending(k => k.longEdge).ToList();
 
-            //比较
-            for (int i = 0; i < BanDatas.Count; i++) {
+        public void CalculateCuttingStyle(List<BanData> banDatas, BanData comparar)
+        {
+            if (banDatas == null || banDatas.Count == 0 || comparar == null) return;
 
-                BanData item1 = BanDatas[i];
+            // curComparer = comparar;
 
-                if (item1.width < comparer.width) continue; //暂时去除宽度不是正常宽度的部分，后期需要考虑斜率去处理
+            allResults.Clear();
 
-                //if (handledBanData.Contains(item1.code)) continue;
+            //排序，按长边进行排序
+            banDatas = banDatas.Where(k => k.type != BanType.BanLining).OrderByDescending(k => k.longEdge).ToList();
 
-                var banData = IsExistLining(BanDatas, comparer.longEdge - item1.longEdge);
+            while (banDatas.Count != 0)
+            {
 
-                //如果不存在能够满足的，单独切割
-                if (banData == null) {
-                    results.Add(new List<BanData>() { item1 });
-                } else {
-                    for (int j = i + 1; j < BanDatas.Count; j++) {
+                //计算出所有可能性（剔除同类型中面积较小的）
 
-                        BanData item2 = BanDatas[j];
+                tempResult.Clear();
 
-                        if (item2.width < comparer.width) continue;
+                BanData item1 = banDatas[0];
 
-                        //if (handledBanData.Contains(item2.code)) continue;
+                var banData1 = IsMatchTwoBansConditon(item1, comparar, banDatas);
+
+                if (banData1 == null)
+                {
+
+                    allResults.Add(new List<BanData>() { item1 }); //单板
+
+                    banDatas.Remove(item1);
+
+                }
+                else
+                {
+                    for (int j = 0; j < banDatas.Count; j++)
+                    {
+
+                        BanData item2 = banDatas[j];
 
                         double p1Lp2S = item1.longEdge + item2.shortEdge;
                         double p1Sp2L = item1.shortEdge + item2.longEdge;
 
                         double maxLength = p1Lp2S >= p1Sp2L ? p1Lp2S : p1Sp2L; //获取最大值
 
-                        //最大值是否超过中幅版的长度，超过不满足
-                        if (maxLength > comparer.longEdge) {
-                            continue;
-                        } else {
-                            //不超过计算还剩多少
-                            double offset = comparer.longEdge - maxLength;
+                        if (maxLength > comparar.longEdge) continue;
 
-                            //判断剩余的长边是否有小于该长度的，可以实现三个板子的拼接
-                            BanData isThreeLining = IsExistLining(BanDatas, offset);
+                        var item3 = IsExistThreeBans(banDatas, comparar.longEdge - maxLength);
 
-                            //满足两个排列组合
-                            if (isThreeLining == null) {
-
-                                if (IsValidate(item1, item2)) {
-                                    results.Add(new List<BanData>() { item1, item2 });
-
-                                    handledBanData.Add(item1.code);
-                                    handledBanData.Add(item2.code);
-                                }
-                            } else { //满足三个组合
-
-                                if (IsValidate(item1, item2, isThreeLining)) {
-                                    results.Add(new List<BanData>() { item1, item2, isThreeLining });
-
-                                    handledBanData.Add(item1.code);
-                                    handledBanData.Add(item2.code);
-                                    handledBanData.Add(isThreeLining.code);
-                                }
-                            }
+                        if (item3 == null)
+                        { //两板组合
+                            tempResult.Add(new List<BanData>() { item1, item2 });
+                        }
+                        else
+                        { //三板组合
+                            tempResult.Add(new List<BanData>() { item1, item2, item3 });
                         }
                     }
-                }
-            }
-        }
+                    //同一类中选出最大面积的可能
+                    List<BanData> optimal = GetMaxBanDatas(tempResult);
+                    if (optimal != null)
+                    {
+                        allResults.Add(optimal);
 
-        public void CalculateCuttingStyle2(List<BanData> BanDatas) {
-            if (BanDatas == null || BanDatas.Count == 0) return;
-
-            ClearDatas();
-
-            //中幅板宽度
-            comparer = BanDatas.Where(k => k.type == BanType.BanLining).FirstOrDefault();
-            if (comparer == null) {
-                comparer = new BanData() { code = 10000, shortEdge = a, longEdge = a, width = b, type = BanType.BanLining };
-            }
-
-            //排序
-            BanDatas = BanDatas.Where(k => k.type != BanType.BanLining).OrderByDescending(k => k.longEdge).ToList();
-
-            //比较
-            for (int i = 0; i < BanDatas.Count; i++) {
-
-                BanData item1 = BanDatas[i];
-
-                if (item1.width < comparer.width) continue;
-
-                for (int j = i + 1; j < BanDatas.Count; j++) {
-
-                    BanData item2 = BanDatas[j];
-
-                    if (item2.width < comparer.width) continue;
-
-                    double p1Lp2S = item1.longEdge + item2.shortEdge;
-                    double p1Sp2L = item1.shortEdge + item2.longEdge;
-
-                    double maxLength = p1Lp2S >= p1Sp2L ? p1Lp2S : p1Sp2L; //获取最大值
-
-                    //最大值是否超过中幅版的长度，超过不满足
-                    if (maxLength > comparer.longEdge) {
-                        continue;
-                    } else {
-                        //不超过计算还剩多少
-                        double offset = comparer.longEdge - maxLength;
-
-                        //判断剩余的长边是否有小于该长度的，可以实现三个板子的拼接
-                        BanData isThreeLining = IsExistLining(BanDatas, offset);
-
-                        //满足两个排列组合
-                        if (isThreeLining == null) {
-
-                            if (!IsValidate2(item1, item2))
-                                results.Add(new List<BanData>() { item1, item2 });
-
-                        } else { //满足三个组合
-
-                            if (!IsValidate2(item1, item2, isThreeLining))
-                                results.Add(new List<BanData>() { item1, item2, isThreeLining });
-
-                        }
+                        optimal.ForEach(k => { banDatas.Remove(k); });
                     }
                 }
             }
 
-            List<int> tempData = new List<int>();
-            for (int i = 0; i < results.Count; i++) {
+            if (!results.ContainsKey(comparar))
+                results.Add(comparar, new List<List<BanData>>());
 
-                List<BanData> data = results[i];
+            tempBanDatas.Clear();
 
-                if (isExist(data, tempData)) continue;
-
-                string str = string.Empty;
-                data.ForEach(k => {
-                    str += $"{k.code} - ";
-                    tempData.Add(k.code);
-                });
-                Console.WriteLine($"可能存在的组合为：{str}");
+            //判断是否有三个中出现相同的情况
+            for (int i = 0; i < allResults.Count; i++)
+            {
+                var items = allResults[i];
+                if (items.Count == 3 && comparar.type == BanType.BanLining)
+                {
+                    if (isAllDiff(items))
+                    {
+                        results[comparar].Add(items);
+                    }
+                    else
+                    {
+                        items.ForEach(k => {
+                            if (!tempBanDatas.Contains(k))
+                                tempBanDatas.Add(k);
+                        });
+                    }
+                }
+                else if (items.Count == 3 && comparar.type == BanType.ThreeQuartersBan)
+                {
+                    if (isAllDiff(items))
+                    {
+                        results[comparar].Add(items);
+                    }
+                    else
+                    {
+                        items.ForEach(k => {
+                            if (!tempBanDatas.Contains(k))
+                                tempBanDatas.Add(k);
+                        });
+                    }
+                }
+                else
+                {
+                    results[comparar].Add(items);
+                }
             }
         }
 
-        void ClearDatas() {
-            if (results != null)
-                results.Clear();
-            if (handledBanData != null)
-                handledBanData.Clear();
-        }
-
-        bool isExist(List<BanData> datas, List<int> tempData) {
-            foreach (var item in datas) {
-                if (tempData.Contains(item.code))
-                    return true;
+        bool isAllDiff(List<BanData> banDatas)
+        {
+            if (banDatas == null || banDatas.Count == 0) return false;
+            var code = banDatas[0].code;
+            for (int i = 1; i < banDatas.Count; i++)
+            {
+                if (code == banDatas[i].code)
+                    return false;
             }
-            return false;
+            return true;
         }
 
-        BanData IsExistLining(List<BanData> BanDatas, double length) {
-            return BanDatas.Where(k => k.longEdge <= length).FirstOrDefault();
+
+        BanData GetComparar(BanType banType)
+        {
+            BanData banData = null;
+            switch (banType)
+            {
+                case BanType.BanLining:
+                    banData = new BanData() { code = 10000, shortEdge = a, longEdge = a, width = b, type = BanType.BanLining };
+                    break;
+                case BanType.ThreeQuartersBan:
+                    banData = new BanData() { code = 10000, shortEdge = a * 3 / 4, longEdge = a * 3 / 4, width = b, type = BanType.ThreeQuartersBan };
+                    break;
+                case BanType.HalfBan:
+                    banData = new BanData() { code = 10000, shortEdge = a * 0.5, longEdge = a * 0.5, width = b, type = BanType.HalfBan };
+                    break;
+            }
+            return banData;
         }
 
-        bool IsValidate(BanData item1, BanData item2) {
+        //[Obsolete]
+        //public void CalculateCuttingStyle(List<BanData> banDatas) {
+        //    if (banDatas == null || banDatas.Count == 0) return;
+        //    ClearDatas();
+
+        //    InitCutParamter();
+
+        //    comparer = banDatas.Where(k => k.type == BanType.BanLining).FirstOrDefault();
+        //    if (comparer == null) {
+        //        comparer = new BanData() { code = 10000, shortEdge = a, longEdge = a, width = b, type = BanType.BanLining };
+        //    }
+        //    //排序，按长边进行排序
+        //    banDatas = banDatas.Where(k => k.type != BanType.BanLining).OrderByDescending(k => k.longEdge).ToList();
+
+        //    //计算出所有可能性（剔除同类型中面积较小的）
+        //    for (int i = 0; i < banDatas.Count; i++) {
+
+        //        tempResult.Clear();
+
+        //        BanData item1 = banDatas[i];
+
+        //        var banData1 = IsMatchTwoBansConditon(item1, comparer, banDatas);
+
+        //        if (banData1 == null) {
+
+        //            results.Add(new List<BanData>() { item1 }); //单板
+
+        //        } else {
+        //            for (int j = i; j < banDatas.Count; j++) {
+
+        //                BanData item2 = banDatas[j];
+
+        //                double p1Lp2S = item1.longEdge + item2.shortEdge;
+        //                double p1Sp2L = item1.shortEdge + item2.longEdge;
+
+        //                double maxLength = p1Lp2S >= p1Sp2L ? p1Lp2S : p1Sp2L; //获取最大值
+
+        //                if (maxLength > comparer.longEdge) continue;
+
+        //                var item3 = IsExistThreeBans(banDatas, comparer.longEdge - maxLength);
+
+        //                if (item3 == null) { //两板组合
+        //                    tempResult.Add(new List<BanData>() { item1, item2 });
+        //                } else { //三板组合
+        //                    tempResult.Add(new List<BanData>() { item1, item2, item3 });
+        //                }
+
+        //            }
+        //            //同一类中选出最大面积的可能
+        //            List<BanData> optimal = GetMaxBanDatas(tempResult);
+        //            if (optimal != null) {
+        //                allResults.Add(optimal);
+        //            }
+        //        }
+        //    }
+
+        //    //计算最终涵盖所有板子的可能性
+        //    allResults = allResults.OrderByDescending(k => CalculateArea(k)).ToList(); //按面积排序
+
+        //    for (int i = 0; i < allResults.Count; i++) {
+
+        //        var item = allResults[i];
+
+        //        if (!IsContained(item)) {
+
+        //            results.Add(allResults[i]);
+
+        //            item.ForEach(k => {
+        //                if (!handledBanData.Contains(k.code))
+        //                    handledBanData.Add(k.code);
+        //            });
+        //        }
+        //    }
+        //}
+
+        /// <summary>
+        /// 已经处理的是否包含该组合的所有元素
+        /// </summary>
+        /// <param name="banDatas"></param>
+        /// <returns></returns>
+        //bool IsContained(List<BanData> banDatas) {
+        //    if (banDatas == null || banDatas.Count == 0) return false;
+        //    bool b = true;
+
+        //    for (int i = 0; i < banDatas.Count; i++) {
+        //        if (!handledBanData.Contains(banDatas[i].code))
+        //            return false;
+        //    }
+
+        //    return b;
+        //}
+
+        /// <summary>
+        /// 获取面积最大的那个组合
+        /// </summary>
+        /// <param name="banDatas"></param>
+        /// <returns></returns>
+        List<BanData> GetMaxBanDatas(List<List<BanData>> banDatas)
+        {
+            if (banDatas == null || banDatas.Count == 0) return null;
+            double maxArea = 0;
+            List<BanData> maxBanDatas = null;
+            for (int i = 0; i < banDatas.Count; i++)
+            {
+                var area = CalculateArea(banDatas[i]);
+                if (area > maxArea)
+                {
+                    maxBanDatas = banDatas[i];
+                    maxArea = area;
+                }
+            }
+            return maxBanDatas;
+        }
+        /// <summary>
+        /// 计算面积
+        /// </summary>
+        /// <param name="banDatas"></param>
+        /// <returns></returns>
+        double CalculateArea(List<BanData> banDatas)
+        {
+            if (banDatas == null || banDatas.Count == 0) return 0;
+
+            double area = 0;
+            banDatas.ForEach(k => {
+                area += (k.shortEdge + k.longEdge) * k.width / 2;
+            });
+            return area;
+        }
+
+        /// <summary>
+        /// 清空数据
+        /// </summary>
+        void ClearDatas()
+        {
+            tempResult.Clear();
+            allResults.Clear();
+            results.Clear();
+            handledBanData.Clear();
+            tempBanDatas.Clear();
+            //curComparer = null;
+        }
+
+
+        /// <summary>
+        /// 判断是否满足两个板的组合
+        /// </summary>
+        /// <param name="banData">待比较的板子</param>
+        /// <param name="comparar">中幅板</param>
+        /// <param name="banDatas">所有异形板</param>
+        /// <returns></returns>
+        BanData IsMatchTwoBansConditon(BanData banData, BanData comparar, List<BanData> banDatas)
+        {
+            if (banData == null || comparar == null || banDatas.Count == 0) return null;
+            double longDis = comparar.longEdge - banData.longEdge; //减去长边剩余的长度
+            double shortDis = comparar.longEdge - banData.shortEdge; //减去短边剩余的长度
+            var data = banDatas.Where(k => k.longEdge <= shortDis && k.shortEdge <= longDis);
+            if (data != null)
+                return data.FirstOrDefault();
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 判断是否满足三个板的组合
+        /// </summary>
+        /// <param name="BanDatas"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        BanData IsExistThreeBans(List<BanData> BanDatas, double length)
+        {
+            if (BanDatas == null || BanDatas.Count == 0) return null;
+            var result = BanDatas.Where(k => k.longEdge <= length).FirstOrDefault();
+            return result;
+        }
+
+        /// <summary>
+        /// 判断是否已经包含两个
+        /// </summary>
+        /// <param name="item1"></param>
+        /// <param name="item2"></param>
+        /// <returns></returns>
+        bool IsValidate(BanData item1, BanData item2)
+        {
             if (item1 != null
                 && item2 != null
-                && handledBanData != null
-                && (!handledBanData.Contains(item1.code)
-                || !handledBanData.Contains(item2.code)))
+                && !handledBanData.Contains(item1.code)
+                && !handledBanData.Contains(item2.code))
                 return true;
             return false;
         }
-
-        bool IsValidate(BanData item1, BanData item2, BanData item3) {
+        /// <summary>
+        /// 判断是否已经包含三个
+        /// </summary>
+        /// <param name="item1"></param>
+        /// <param name="item2"></param>
+        /// <param name="item3"></param>
+        /// <returns></returns>
+        bool IsValidate(BanData item1, BanData item2, BanData item3)
+        {
             if (item1 != null
                 && item2 != null
                 && item3 != null
-                && handledBanData != null
-                && (!handledBanData.Contains(item1.code)
-                || !handledBanData.Contains(item2.code)
-                || !handledBanData.Contains(item3.code)))
+                && !handledBanData.Contains(item1.code)
+                && !handledBanData.Contains(item2.code)
+                && !handledBanData.Contains(item3.code))
                 return true;
             return false;
         }
 
-        bool IsValidate2(BanData item1, BanData item2) {
-            bool isExit = false;
-            results.ForEach(k => {
-                if (k.Contains(item1) && k.Contains(item2))
-                    isExit = true;
-            });
-            return isExit;
-        }
-
-        bool IsValidate2(BanData item1, BanData item2, BanData item3) {
-            bool isExit = false;
-            results.ForEach(k => {
-                if (k.Contains(item1) && k.Contains(item2) && k.Contains(item3))
-                    isExit = true;
-            });
-            return isExit;
-        }
-
+       
         #endregion
+
         #region Draw
 
         private double initPositionX; //切割下料图的初始水平位置
         private double initPositionY; //切割下料图的初始水平位置
+
+        private void BeamPart_Click(object sender, EventArgs e)
+        {
+            DrawHelper.AddBlockReference("zlaz", Point3d.Origin, 0);
+        }
+
         private double horizontalOffset; //下料图之间的水平偏移量
         private double verticalOffset; //下料图之间的垂直偏移量
         private double columeCount; //每行下料图的个数
@@ -896,188 +1094,286 @@ namespace CadPlugins {
         private double horizontalLabelOffset; //水平标注偏移量
         private double verticalLabelOffset; //垂直标注偏移量
 
-        Point3d initPos; //下料图的初始位置
+        private Point3d initPos; //下料图的初始位置
 
-        double length = 9680;
-        double width = 2450;
-        public void DrawCuttingStyles(List<List<BanData>> BanDatas) {
+        private double textHeight = 500;
 
-            length = comparer.longEdge;
-            width = comparer.width;
+        public void DrawCuttingStyles(Dictionary<BanData, List<List<BanData>>> BanDatas)
+        {
 
             int rowCount = 0;
 
-            for (int i = 0; i < BanDatas.Count; i++) {
-                List<BanData> items = BanDatas[i];
+            foreach (var item in BanDatas)
+            {
+                for (int i = 0; i < item.Value.Count; i++)
+                {
+                    List<BanData> items = item.Value[i];
 
-                if (i % columeCount == 0) rowCount++;
+                    if (i % columeCount == 0) rowCount++;
 
-                var horPos = initPositionX + (i % columeCount) * horizontalOffset;
-                var verPos = initPositionY + (rowCount - 1) * -verticalOffset;
+                    var horPos = initPositionX + (i % columeCount) * horizontalOffset;
+                    var verPos = initPositionY + (rowCount - 1) * -verticalOffset;
 
-                initPos = new Point3d(horPos, verPos, 0);
+                    initPos = new Point3d(horPos, verPos, 0);
 
-                if (items.Count == 1) {
-                    CreateOneLining(items);
-                } else if (items.Count == 2) {
-                    CreateTwoLining(items);
-                } else if (items.Count == 3) {
-                    CreateThreeLining(items);
+                    //绘制板
+                    if (items.Count == 1)
+                    {
+                        CreateOneLining(items);
+                    }
+                    else if (items.Count == 2)
+                    {
+                        CreateTwoLining(items, item.Key);
+                    }
+                    else if (items.Count == 3)
+                    {
+                        CreateThreeLining(items, item.Key);
+                    }
+
+                    CreateCountText(items, initPos, item.Key);
                 }
             }
+
+            rowCount++;
+
+            initPos = new Point3d(initPositionX, initPositionY + (rowCount - 1) * -verticalOffset, 0);
+            CreateNormalLining(BanType.BanLining, initPos, four);
+            initPos = new Point3d(initPositionX + horizontalOffset, initPositionY + (rowCount - 1) * -verticalOffset, 0);
+            CreateNormalLining(BanType.ThreeQuartersBan, initPos, three);
+            initPos = new Point3d(initPositionX + 2 * horizontalOffset, initPositionY + (rowCount - 1) * -verticalOffset, 0);
+            CreateNormalLining(BanType.HalfBan, initPos, two);
+            initPos = new Point3d(initPositionX + 3 * horizontalOffset, initPositionY + (rowCount - 1) * -verticalOffset, 0);
+            CreateNormalLining(BanType.QuarterBane, initPos, one);
+
         }
 
-        void CreateOneLining(List<BanData> banDatas) {
+        void CreateCountText(List<BanData> items, Point3d initPos, BanData comparar)
+        {
+            //标注需要多少块板
+            int count = 0;
+            if (IsAllSame(items) && items.Count != 1)
+            {
+                count = 2;
+            }
+            else
+            {
+                count = 4;
+            }
+            var x = initPos.X + comparar.longEdge * 0.5 - 1000;
+            var y = initPos.Y - 3000;
+            DrawHelper.CreateText($"{count}板  {count}Plates", new Point3d(x, y, 0), textHeight, "标注1");
+            auto.CreateLine(new Point3d(x, y, 0), new Point3d(x + 5000, y, 0), "0");
+        }
+
+        void CreateNormalLining(BanType banType, Point3d initPos, int count)
+        {
+            if (count == 0) return;
+
+            var length = a;
+            var width = b;
+
+            switch (banType)
+            {
+                case BanType.ThreeQuartersBan:
+                    length = a * 3 / 4;
+                    break;
+                case BanType.HalfBan:
+                    length = a * 0.5;
+                    break;
+            }
+
+            Point3d point0 = initPos;
+            Point3d point1 = new Point3d(initPos.X + length, initPos.Y, 0);
+            Point3d point2 = new Point3d(initPos.X + length, initPos.Y + width, 0);
+            Point3d point3 = new Point3d(initPos.X, initPos.Y + width, 0);
+
+            auto.CreateLine(point0, point1, "0");
+            auto.CreateLine(point1, point2, "0");
+            auto.CreateLine(point2, point3, "0");
+            auto.CreateLine(point3, point0, "0");
+
+            DrawHelper.DrawHorizontalDim(point0, point1, length.ToString("N0"), -verticalLabelOffset);//长边
+            DrawHelper.DrawVerticalDim(point0, point3, width.ToString("N0"), -horizontalLabelOffset);//高度
+            DrawHelper.DrawHorizontalDim(point2, point3, length.ToString("N0"), horizontalLabelOffset);//短边
+
+            var x = initPos.X + length * 0.5 - 1000;
+            var y = initPos.Y - 3000;
+            DrawHelper.CreateText($"{count}板  {count}Plates", new Point3d(x, y, 0), textHeight, "标注1");
+            auto.CreateLine(new Point3d(x, y, 0), new Point3d(x + 5000, y, 0), "0");
+        }
+
+        bool IsAllSame(List<BanData> banDatas)
+        {
+            if (banDatas == null || banDatas.Count == 0) return false;
+            var temp = banDatas[0];
+            for (int i = 1; i < banDatas.Count; i++)
+            {
+                if (temp.code != banDatas[i].code) return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 单板切割
+        /// </summary>
+        /// <param name="banDatas"></param>
+        void CreateOneLining(List<BanData> banDatas)
+        {
             if (banDatas == null || banDatas.Count == 0) return;
-            
+
             BanData BanData0 = banDatas[0];
 
-            Point3d point00 = initPos; //左下角点
-            Point3d point01 = new Point3d(initPos.X + BanData0.longEdge, initPos.Y, 0); //长边点
-            Point3d point02 = new Point3d(initPos.X, initPos.Y + width, 0); //高度
-            Point3d point03 = new Point3d(initPos.X + BanData0.shortEdge, initPos.Y + width, 0); //短边
-
-            CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 }, BanData0);
-
-            //绘制标注
-            DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString("N0"), -horizontalLabelOffset);//长边
-            DrawHelper.DrawVerticalDim(point00, point02, BanData0.width.ToString("N0"), -verticalLabelOffset);//高度
-            DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString("N0"), horizontalLabelOffset);//短边
-
-            //创建数字标识
-            CreateText(BanData0, point00);
+            CreateLiningLine(new List<Point3d>() {
+                new Point3d( initPos.X,initPos.Y,0),   //左下角
+                new Point3d(initPos.X + BanData0.longEdge, initPos.Y, 0), //右下角
+                new Point3d(initPos.X + BanData0.shortEdge, initPos.Y + BanData0.width, 0), //右上角
+                new Point3d(initPos.X, initPos.Y + BanData0.width, 0), //左上角
+            }, banDatas[0], BanPosType.Left);
         }
 
-        void CreateTwoLining(List<BanData> BanDatas) {
-            if (BanDatas == null || BanDatas.Count == 0) return;
+        /// <summary>
+        /// 双板切割
+        /// </summary>
+        /// <param name="BanDatas"></param>
+        void CreateTwoLining(List<BanData> banDatas, BanData comparar)
+        {
+            if (banDatas == null || banDatas.Count == 0) return;
 
-            BanData BanData0 = BanDatas[0];
+            var length = comparar.longEdge;
 
-            Point3d point00 = initPos; //左下角点
-            Point3d point01 = new Point3d(initPos.X + BanData0.longEdge, initPos.Y, 0); //长边点
-            Point3d point02 = new Point3d(initPos.X, initPos.Y + width, 0); //高度
-            Point3d point03 = new Point3d(initPos.X + BanData0.shortEdge, initPos.Y + width, 0); //短边
+            BanData BanData0 = banDatas[0];
+            CreateLiningLine(new List<Point3d>() {
+                new Point3d( initPos.X,initPos.Y,0),  //左下角
+                new Point3d(initPos.X + BanData0.longEdge, initPos.Y, 0), //右下角
+                new Point3d(initPos.X + BanData0.shortEdge, initPos.Y + BanData0.width, 0), //右上角
+                new Point3d(initPos.X, initPos.Y + BanData0.width, 0), //左上角
+            }, banDatas[0], BanPosType.Left);
 
-            CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 }, BanData0);
+            BanData BanData1 = banDatas[1];
+            CreateLiningLine(new List<Point3d>() {
+                new Point3d(initPos.X + length - BanData1.shortEdge, initPos.Y, 0), //左下角
+                new Point3d(initPos.X + length, initPos.Y, 0), //右下角
+                new Point3d(initPos.X + length, initPos.Y + BanData1.width, 0), //右上角
+                new Point3d(initPos.X + length - BanData1.longEdge, initPos.Y + BanData1.width, 0) //左上角
+            }, BanData1, BanPosType.ShortRight);
 
-            //绘制标注
-            DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString("N0"), -horizontalLabelOffset);//长边
-            DrawHelper.DrawVerticalDim(point00, point02, BanData0.width.ToString("N0"), -verticalLabelOffset);//高度
-            DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString("N0"), horizontalLabelOffset);//短边
 
-            //创建数字标识
-            CreateText(BanData0, point00);
-
-            BanData BanData1 = BanDatas[1];
-
-            Point3d point10 = new Point3d(initPos.X + length - BanData1.shortEdge, initPos.Y, 0); //短边左下角点
-            Point3d point11 = new Point3d(initPos.X + length, initPos.Y, 0); //端边点；
-            Point3d point12 = new Point3d(initPos.X + length, initPos.Y + width, 0); //高度
-            Point3d point13 = new Point3d(initPos.X + length - BanData1.longEdge, initPos.Y + width, 0); //长边点
-
-            CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
-
-            //绘制标注
-            DrawHelper.DrawHorizontalDim(point11, point10, BanData1.shortEdge.ToString("N0"), -horizontalLabelOffset);//短边
-            DrawHelper.DrawVerticalDim(point11, point12, BanData1.width.ToString("N0"), verticalLabelOffset);//高度
-            DrawHelper.DrawHorizontalDim(point12, point13, BanData1.longEdge.ToString("N0"), horizontalLabelOffset);//长边
-
-            //创建数字标识
-            CreateText(BanData1, point12, false);
-
-            DrawHelper.DrawHorizontalDim(point02, point12, length.ToString("N0"), 2 * horizontalLabelOffset);//总长
+            DrawHelper.DrawHorizontalDim(
+                new Point3d(initPos.X, initPos.Y + BanData0.width, 0),
+                new Point3d(initPos.X + length, initPos.Y + BanData1.width, 0),
+                length.ToString("N0"), 2 * horizontalLabelOffset);  //总长
         }
 
-        void CreateThreeLining(List<BanData> BanDatas) {
-            if (BanDatas == null || BanDatas.Count == 0) return;
-            //最左边
-            BanData BanData0 = BanDatas[0];
+        /// <summary>
+        /// 三板切割
+        /// </summary>
+        /// <param name="BanDatas"></param>
+        void CreateThreeLining(List<BanData> banDatas, BanData comparar)
+        {
+            if (banDatas == null || banDatas.Count == 0) return;
 
-            Point3d point00 = initPos; //左下角点
-            Point3d point01 = new Point3d(initPos.X + BanData0.longEdge, initPos.Y, 0); //长边点；
-            Point3d point02 = new Point3d(initPos.X, initPos.Y + width, 0); //高度
-            Point3d point03 = new Point3d(initPos.X + BanData0.shortEdge, initPos.Y + width, 0); //短边
+            var length = comparar.longEdge;
 
-            CreateLiningLine(new List<Point3d>() { point00, point01, point03, point02 }, BanData0);
+            BanData BanData0 = banDatas[0];
+            CreateLiningLine(new List<Point3d>() {
+                new Point3d(initPos.X,initPos.Y,0),    //左下角
+                new Point3d(initPos.X + BanData0.longEdge, initPos.Y, 0), //右下角
+                new Point3d(initPos.X + BanData0.shortEdge, initPos.Y + BanData0.width, 0), //右上角
+                new Point3d(initPos.X, initPos.Y + BanData0.width, 0), //左上角
+            }, banDatas[0], BanPosType.Left);
 
-            //绘制标注
-            DrawHelper.DrawHorizontalDim(point00, point01, BanData0.longEdge.ToString("N0"), -horizontalLabelOffset);//长边
-            DrawHelper.DrawVerticalDim(point00, point02, BanData0.longEdge.ToString("N0"), -verticalLabelOffset);//高度
-            DrawHelper.DrawHorizontalDim(point02, point03, BanData0.shortEdge.ToString("N0"), horizontalLabelOffset);//短边
+            BanData BanData2 = banDatas[2];
+            CreateLiningLine(new List<Point3d>() {
+                new Point3d(initPos.X + length - BanData2.longEdge, initPos.Y, 0), //左下角
+                new Point3d(initPos.X + length, initPos.Y, 0), //右下角
+                new Point3d(initPos.X + length, initPos.Y + BanData2.width, 0), //右上角
+                new Point3d(initPos.X + length - BanData2.shortEdge, initPos.Y + BanData2.width, 0) //左上角
+            }, BanData2, BanPosType.ShortRight);
 
-            //创建数字标识
-            CreateText(BanData0, point00);
+            DrawHelper.DrawHorizontalDim(
+              new Point3d(initPos.X, initPos.Y + BanData0.width, 0),
+              new Point3d(initPos.X + length, initPos.Y + BanData2.width, 0),
+              length.ToString("N0"), 2 * horizontalLabelOffset);  //总长
 
-
-            //最右边
-            BanData BanData2 = BanDatas[2];
-
-            Point3d point20 = new Point3d(initPos.X + length - BanData2.longEdge, initPos.Y, 0); //短边左下角点
-            Point3d point21 = new Point3d(initPos.X + length, initPos.Y, 0); //端边点；
-            Point3d point22 = new Point3d(initPos.X + length, initPos.Y + width, 0); //高度
-            Point3d point23 = new Point3d(initPos.X + length - BanData2.shortEdge, initPos.Y + width, 0); //长边点
-
-            CreateLiningLine(new List<Point3d>() { point20, point21, point22, point23 }, BanData2);
-
-
-            //绘制标注
-            DrawHelper.DrawHorizontalDim(point21, point20, BanData2.longEdge.ToString("N0"), -horizontalLabelOffset);//短边
-            DrawHelper.DrawVerticalDim(point21, point22, BanData2.width.ToString("N0"), verticalLabelOffset);//高度
-            DrawHelper.DrawHorizontalDim(point22, point23, BanData2.shortEdge.ToString("N0"), horizontalLabelOffset);//长边
-
-            //创建数字标识
-            CreateText(BanData2, point22, false);
-
-            DrawHelper.DrawHorizontalDim(point02, point22, length.ToString("N0"), verticalLabelOffset * 2);//总长
-
-            //中间
-            BanData BanData1 = BanDatas[1];
-
+            BanData BanData1 = banDatas[1];
+            //计算按那个边进行分割
             double upOffset = length - BanData0.shortEdge - BanData1.longEdge - BanData2.shortEdge;
             double downOffset = length - BanData0.longEdge - BanData1.shortEdge - BanData2.longEdge;
+            double offset = upOffset < downOffset ? upOffset * 0.5 : downOffset * 0.5;
 
-            if (upOffset < downOffset) {
-                double middleLeftPointX = initPos.X + BanData0.shortEdge + upOffset / 2;
+            double middleLeftPointX = initPos.X + BanData0.longEdge + offset;
 
-                Point3d point10 = new Point3d(middleLeftPointX, initPos.Y + width, 0); //左上角
-                Point3d point11 = new Point3d(middleLeftPointX + BanData1.longEdge, initPos.Y + width, 0); //右上角；
-                Point3d point12 = new Point3d(point11.X, initPos.Y, 0); //右下角
-                Point3d point13 = new Point3d(point11.X - BanData1.shortEdge, initPos.Y, 0); //左下角
-
-                CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
-
-                //绘制标注
-                DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString("N0"), horizontalLabelOffset);//长边
-                DrawHelper.DrawHorizontalDim(point13, point12, BanData1.shortEdge.ToString("N0"), -horizontalLabelOffset);//短边
-
-                //创建数字标识
-                CreateText(BanData1, point13);
-
-            } else {
-                double middleLeftPointX = initPos.X + BanData0.longEdge + downOffset / 2;
-
-                Point3d point10 = new Point3d(middleLeftPointX, initPos.Y, 0); //短边左下角点
-                Point3d point11 = new Point3d(point10.X + BanData1.shortEdge, initPos.Y, 0); //端边点；
-                Point3d point12 = new Point3d(point10.X + BanData1.shortEdge, initPos.Y + width, 0); //高度
-                Point3d point13 = new Point3d(point10.X + BanData1.shortEdge - BanData1.longEdge, initPos.Y + width, 0); //长边点
-
-                CreateLiningLine(new List<Point3d>() { point10, point11, point12, point13 }, BanData1);
-
-                //绘制标注
-                DrawHelper.DrawHorizontalDim(point10, point11, BanData1.longEdge.ToString("N0"), -horizontalLabelOffset);//短边
-                DrawHelper.DrawHorizontalDim(point12, point13, BanData1.shortEdge.ToString("N0"), horizontalLabelOffset);//长边
-
-                //创建数字标识
-                CreateText(BanData1, point10);
+            //避免出现左中上交叉情况
+            double downLenght = BanData0.longEdge + offset + BanData1.shortEdge;
+            double upLenght = BanData0.shortEdge + BanData1.longEdge;
+            if (downLenght < upLenght)
+            {
+                double offset2 = upLenght - downLenght; //去掉交叉的部分
+                middleLeftPointX = initPos.X + BanData0.longEdge + offset + offset2 + (downOffset * 0.5 - offset) * 0.5;
             }
+
+            //避免出现中右下交叉
+            double middleLeftOffset = initPos.X + length - middleLeftPointX - BanData1.shortEdge - BanData2.longEdge;
+            if (middleLeftOffset < 0)
+            {
+                var ss = middleLeftPointX + BanData1.shortEdge - BanData1.longEdge - BanData0.shortEdge + middleLeftOffset - initPos.X;
+                middleLeftPointX = middleLeftPointX + middleLeftOffset - ss * 0.5;
+            }
+
+            CreateLiningLine(new List<Point3d>() {
+                    new Point3d(middleLeftPointX, initPos.Y , 0), //左下角
+                    new Point3d(middleLeftPointX + BanData1.shortEdge, initPos.Y, 0), //右下角
+                    new Point3d(middleLeftPointX + BanData1.shortEdge, initPos.Y + BanData1.width, 0), // 右上角
+                    new Point3d(middleLeftPointX + BanData1.shortEdge- BanData1.longEdge, initPos.Y + BanData1.width, 0) //左上角
+                }, BanData1, BanPosType.ShortMiddle);
         }
 
-        void CreateLiningLine(List<Point3d> points, BanData banData) { //逆时针绘制，从左下角开始画
+        /// <summary>
+        /// 逆时针排列点进行绘制
+        /// </summary>
+        /// <param name="points"></param>
+        /// <param name="banData"></param>
+        /// <param name="type"></param>
+        void CreateLiningLine(List<Point3d> points, BanData banData, BanPosType type)
+        { //逆时针绘制，从左下角开始画
             if (points == null || points.Count != 4) return;
-            auto.CreateLine(points[0], points[1], "0"); //长边
-            auto.CreateLine(points[1], points[2], "0"); //高
-            auto.CreateLine(points[2], points[3], "0"); //短边
-            auto.CreateLine(points[3], points[0], "0"); //斜边
+
+            auto.CreateLine(points[0], points[1], "0");
+            auto.CreateLine(points[1], points[2], "0");
+            auto.CreateLine(points[2], points[3], "0");
+            auto.CreateLine(points[3], points[0], "0");
+
+            //绘制标注
+            if (type == BanPosType.Left)
+            {
+                DrawHelper.DrawVerticalDim(points[0], points[3], banData.width.ToString("N0"), -verticalLabelOffset);//高度
+                DrawHelper.DrawHorizontalDim(points[0], points[1], banData.longEdge.ToString("N0"), -horizontalLabelOffset);//长边
+                DrawHelper.DrawHorizontalDim(points[2], points[3], banData.shortEdge.ToString("N0"), horizontalLabelOffset);//短边
+            }
+            else if (type == BanPosType.ShortMiddle)
+            {
+                DrawHelper.DrawHorizontalDim(points[0], points[1], banData.shortEdge.ToString("N0"), -horizontalLabelOffset);//长边
+                DrawHelper.DrawHorizontalDim(points[2], points[3], banData.longEdge.ToString("N0"), horizontalLabelOffset);//短边
+            }
+            else if (type == BanPosType.LongMiddle)
+            {
+                DrawHelper.DrawHorizontalDim(points[0], points[1], banData.longEdge.ToString("N0"), -horizontalLabelOffset);//长边
+                DrawHelper.DrawHorizontalDim(points[2], points[3], banData.shortEdge.ToString("N0"), horizontalLabelOffset);//短边
+            }
+            else if (type == BanPosType.ShortRight)
+            {
+                DrawHelper.DrawHorizontalDim(points[0], points[1], banData.shortEdge.ToString("N0"), -horizontalLabelOffset);//短边
+                DrawHelper.DrawVerticalDim(points[1], points[2], banData.width.ToString("N0"), verticalLabelOffset);//高度
+                DrawHelper.DrawHorizontalDim(points[2], points[3], banData.longEdge.ToString("N0"), horizontalLabelOffset);//长边
+            }
+            else if (type == BanPosType.LongRight)
+            {
+                DrawHelper.DrawHorizontalDim(points[0], points[1], banData.longEdge.ToString("N0"), -horizontalLabelOffset);//长边
+                DrawHelper.DrawVerticalDim(points[1], points[2], banData.width.ToString("N0"), verticalLabelOffset);//高度
+                DrawHelper.DrawHorizontalDim(points[2], points[3], banData.shortEdge.ToString("N0"), horizontalLabelOffset);//短边
+            }
+            //创建数字标识
+            CreateText(banData, points[0]);
         }
 
         /// <summary>
@@ -1086,9 +1382,9 @@ namespace CadPlugins {
         /// <param name="banData"></param>
         /// <param name="leftDownPos"></param>
         /// <param name="isNoraml">true表示长边在下边，短边在上边</param>
-        void CreateText(BanData banData, Point3d leftDownPos, bool isNormal = true) {
+        void CreateText(BanData banData, Point3d leftDownPos, bool isNormal = true)
+        {
             if (banData == null) return;
-            double textHeight = 500;
             DrawHelper.CreateText(banData.code.ToString() + "L", GetCenter(banData, leftDownPos, textHeight, isNormal), textHeight, "标注1");
         }
 
@@ -1100,16 +1396,25 @@ namespace CadPlugins {
         /// <param name="textHeight"></param>
         /// <param name="isNormal"></param>
         /// <returns></returns>
-        Point3d GetCenter(BanData banData, Point3d initPos, double textHeight, bool isNormal) {
-            if (isNormal) {
+        Point3d GetCenter(BanData banData, Point3d initPos, double textHeight, bool isNormal)
+        {
+            if (isNormal)
+            {
                 var x = initPos.X + (banData.longEdge + banData.shortEdge) * 0.25 - textHeight * 0.5;
                 var y = initPos.Y + banData.width * 0.5 - textHeight * 0.5;
                 return new Point3d(x, y, 0);
-            } else {
+            }
+            else
+            {
                 var x = initPos.X - (banData.longEdge + banData.shortEdge) * 0.25 - textHeight * 0.5;
                 var y = initPos.Y - banData.width * 0.5 - textHeight * 0.5;
                 return new Point3d(x, y, 0);
             }
+        }
+
+        void DreateDiffBans()
+        {
+
         }
 
         #endregion
@@ -1138,12 +1443,33 @@ namespace CadPlugins {
 
 
         }
+        private void BottomAndRing_Click(object sender, EventArgs e)
+        {
+            Point3d p3 = new Point3d(-(r+10000), -(r+10000), 0);
+            Point3d p4 = new Point3d(r+10000, r+10000, 0);
+            DBObjectCollection objs = DrawHelper.SelectObjsCrossingWindow(p3, p4);
+            foreach(Entity obj in objs)
+            {               
+                Entity ent= DrawHelper.CopyRotateScale(obj,new Point3d(0,0,0),new Point3d(81287.6820,17801.3108 , 0.0000),stAng,0.5);
+                DrawHelper.AddToModelSpace(ent);
+            }
+            Point3d p1 = new Point3d(-(R+5000), -1000, 0);
+            Point3d p2 = new Point3d(r+5000, -(R+10000), 0);
+            ObjectIdCollection delObjs = DrawHelper.SelectIdsCrossingWindow(p1, p2);
+
+
+
+            DrawHelper.Remove(delObjs);            
+            DrawHelper.AddBlockReference("tk2", Point3d.Origin, 0);
+
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             DrawingLining();
         }
         private void Lining_Click(object sender, EventArgs e)
         {
+            Init();
             LiningPlan();
             Tk();
         }
@@ -1156,22 +1482,116 @@ namespace CadPlugins {
             RingInit();
             CreateABeam();
             CreateCircleRings(center, 150);
+            CreateNotes();
+            Point3d p2 = new Point3d(center.X + 75000, center.Y, 0);
+            CreateLittleCircle(p2, 150);
+            CreateLittleBeam(p2);
+            DrawHelper.AddBlockReference("tkgd", Point3d.Origin, 0);
+
+
         }
-        private void GenerateCutTypeBtn_Click(object sender, EventArgs e) {
-            CalculateCuttingStyle(bans);
+        public void CreateLittleBeam(Point3d p2)
+        {
+            double delAng = Math.PI * 2 / numAll;
+            for (int i = 0; i < numA; i++)
+            {
+                double ang = i * (2 * Math.PI / numA);
+                CreateOneBeam(ring1, 4000, p2, ang);
+            }
+            for (int i = 0; i < numB; i++)
+            {
+                double ang = i * (2 * Math.PI / numB) + delAng;
+                CreateOneBeam(ring2, 4000, p2, ang);
+            }
+          
+
+
+        }
+        private void TopPositin_Click(object sender, EventArgs e)
+        {
+            Point3d p = new Point3d(0, -ring8 - 25000, 0);
+            DrawHelper.AddBlockReference("kj", p, 0);
+            AddPositionDim(p);
+
+        }
+        public void AddPositionDim(Point3d point)
+        {
+            Point3d p11 = new Point3d(0, point.Y - 3000, 0);
+            Point3d p12 = new Point3d(ring1, point.Y - 3000, 0);
+            DrawHelper.DrawHorizontalDim(p11, p12, ring1.ToString(), -1000);
+            Point3d p21 = new Point3d(0, point.Y - 4500, 0);
+            Point3d p22 = new Point3d(ring2, point.Y - 4500, 0);
+            DrawHelper.DrawHorizontalDim(p21, p22, ring2.ToString(), -1000);
+            
+            Point3d p31 = new Point3d(0, point.Y - 6000, 0);
+            Point3d p32 = new Point3d(ring3, point.Y - 6000, 0);
+            DrawHelper.DrawHorizontalDim(p31, p32, ring3.ToString(), -1000);
+            Point3d p41 = new Point3d(0, point.Y - 7500, 0);
+            Point3d p42 = new Point3d(ring4, point.Y - 7500, 0);
+            DrawHelper.DrawHorizontalDim(p41, p42, ring4.ToString(), -1000);
+
+            Point3d p51 = new Point3d(0, point.Y - 9000, 0);
+            Point3d p52 = new Point3d(ring5, point.Y - 9000, 0);
+            DrawHelper.DrawHorizontalDim(p51, p52, ring5.ToString(), -1000);
+            Point3d p61 = new Point3d(0, point.Y - 10500, 0);
+            Point3d p62 = new Point3d(ring6, point.Y - 10500, 0);
+            DrawHelper.DrawHorizontalDim(p61, p62, ring6.ToString(), -1000);
+
+            Point3d p71 = new Point3d(0, point.Y - 12000, 0);
+            Point3d p72 = new Point3d(ring7, point.Y - 12000, 0);
+            DrawHelper.DrawHorizontalDim(p71, p72, ring7.ToString(), -1000);
+            Point3d p81 = new Point3d(0, point.Y - 13500, 0);
+            Point3d p82 = new Point3d(ring8, point.Y - 13500, 0);
+            DrawHelper.DrawHorizontalDim(p81, p82, ring8.ToString(), -1000);
+        }
+
+
+
+
+
+        private void CreateLittleCircle(Point3d p2, double width)
+        {
+            CreateOneCircleRing(p2, ring1, 150);
+            CreateOneCircleRing(p2, ring2, 150);
+    
+        }
+
+        private void GenerateCutTypeBtn_Click(object sender, EventArgs e)
+        {
+            ClearDatas();
+            InitCutParamter();
+            //CalculateCuttingStyle(bans, GetComparar(BanType.BanLining));
+            Calculate();
+            DrawCuttingStyles(results);
+            DrawHelper.AddBlockReference("tk0", Point3d.Origin, 0);
+        }
+
+        private void GenerateTestCutTypes_Click(object sender, EventArgs e)
+        {
+            CalculateCuttingStyle(m_BanDatas, GetComparar(BanType.BanLining));
             DrawCuttingStyles(results);
         }
-        private void GenerateTestCutTypes_Click(object sender, EventArgs e) {
-            CalculateCuttingStyle(BanDatas);
+
+        private void GenerateAllTestCutTypes_Click(object sender, EventArgs e)
+        {
+            CalculateCuttingStyle(m_BanDatas, GetComparar(BanType.BanLining));
             DrawCuttingStyles(results);
         }
-        private void GenerateAllTestCutTypes_Click(object sender, EventArgs e) {
-            CalculateCuttingStyle2(BanDatas);
+        private void button2_Click(object sender, EventArgs e)
+        {
+            CalculateCuttingStyle(bans, GetComparar(BanType.BanLining));
             DrawCuttingStyles(results);
         }
-        private void button2_Click(object sender, EventArgs e) {
-            CalculateCuttingStyle2(bans);
-            DrawCuttingStyles(results);
+
+        private void InitCutParamter()
+        {
+            initPositionX = Convert.ToDouble(textBox7.Text);
+            initPositionY = Convert.ToDouble(textBox13.Text);
+            columeCount = Convert.ToDouble(textBox10.Text);
+            horizontalOffset = Convert.ToDouble(textBox9.Text);
+            verticalOffset = Convert.ToDouble(textBox11.Text);
+            horizontalLabelOffset = Convert.ToDouble(textBox2.Text);
+            verticalLabelOffset = Convert.ToDouble(textBox4.Text);
         }
         private void textBox7_TextChanged(object sender, EventArgs e) {
             if (textBox7.Text != null)

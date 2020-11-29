@@ -267,9 +267,6 @@ namespace AutoBe
             return ps;
 
         }
-
-
-
         public void CreateFourText(string str,Point3d p1,Point3d center)
         {
             List<Point3d> ps = GetThreePoint(p1, center);
@@ -279,8 +276,6 @@ namespace AutoBe
                 CreateText(str, p, 500, "0",0);
             }
         }
-
-
         public Line CreateLine(Point3d p1,Point3d p2,string layer)
         {
             Line line = new Line(p1, p2);

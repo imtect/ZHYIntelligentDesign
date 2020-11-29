@@ -149,3 +149,15 @@ E:\git\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CoreCompileInputs.cache
 E:\git\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CopyComplete
 E:\git\ZHYIntelligentDesign\obj\Debug\CadPlugins.dll
 E:\git\ZHYIntelligentDesign\obj\Debug\CadPlugins.pdb
+E:\01_Work\ZHY\ZHYIntelligentDesign\bin\Debug\CadPlugins.dll
+E:\01_Work\ZHY\ZHYIntelligentDesign\bin\Debug\CadPlugins.pdb
+E:\01_Work\ZHY\ZHYIntelligentDesign\bin\Debug\Newtonsoft.Json.dll
+E:\01_Work\ZHY\ZHYIntelligentDesign\obj\Debug\CadPlugins.csprojAssemblyReference.cache
+E:\01_Work\ZHY\ZHYIntelligentDesign\obj\Debug\CadPlugins.Properties.Resources.resources
+E:\01_Work\ZHY\ZHYIntelligentDesign\obj\Debug\CadPlugins.SBForm.resources
+E:\01_Work\ZHY\ZHYIntelligentDesign\obj\Debug\CadPlugins.MainForm.resources
+E:\01_Work\ZHY\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.GenerateResource.cache
+E:\01_Work\ZHY\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CoreCompileInputs.cache
+E:\01_Work\ZHY\ZHYIntelligentDesign\obj\Debug\CadPlugins.csproj.CopyComplete
+E:\01_Work\ZHY\ZHYIntelligentDesign\obj\Debug\CadPlugins.dll
+E:\01_Work\ZHY\ZHYIntelligentDesign\obj\Debug\CadPlugins.pdb

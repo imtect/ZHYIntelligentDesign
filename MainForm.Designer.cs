@@ -72,12 +72,9 @@
             this.label35 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.GenerateAllTestCutTypes = new System.Windows.Forms.Button();
             this.BottomAndRing = new System.Windows.Forms.Button();
             this.Lining = new System.Windows.Forms.Button();
             this.GenerateCutTypeBtn = new System.Windows.Forms.Button();
-            this.GenerateTestCutTypes = new System.Windows.Forms.Button();
             this.angleC = new System.Windows.Forms.TextBox();
             this.angleB = new System.Windows.Forms.TextBox();
             this.angleA = new System.Windows.Forms.TextBox();
@@ -99,6 +96,8 @@
             this.label38 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
+            this.BeamPart = new System.Windows.Forms.Button();
+            this.TopPositin = new System.Windows.Forms.Button();
             this.RingCircle = new System.Windows.Forms.Button();
             this.NumberC = new System.Windows.Forms.TextBox();
             this.Beam7 = new System.Windows.Forms.TextBox();
@@ -116,8 +115,6 @@
             this.Beam1 = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.TopPositin = new System.Windows.Forms.Button();
-            this.BeamPart = new System.Windows.Forms.Button();
             groupBox1 = new System.Windows.Forms.GroupBox();
             groupBox2 = new System.Windows.Forms.GroupBox();
             groupBox3 = new System.Windows.Forms.GroupBox();
@@ -393,12 +390,9 @@
             groupBox2.Controls.Add(this.label35);
             groupBox2.Controls.Add(this.label13);
             groupBox2.Controls.Add(this.label12);
-            groupBox2.Controls.Add(this.button2);
-            groupBox2.Controls.Add(this.GenerateAllTestCutTypes);
             groupBox2.Controls.Add(this.BottomAndRing);
             groupBox2.Controls.Add(this.Lining);
             groupBox2.Controls.Add(this.GenerateCutTypeBtn);
-            groupBox2.Controls.Add(this.GenerateTestCutTypes);
             groupBox2.Controls.Add(this.angleC);
             groupBox2.Controls.Add(this.angleB);
             groupBox2.Controls.Add(this.angleA);
@@ -565,34 +559,6 @@
             this.label12.TabIndex = 10;
             this.label12.Text = "二类缝宽：";
             // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(48)))));
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button2.Location = new System.Drawing.Point(143, 248);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(137, 29);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "生成所有切割类型";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // GenerateAllTestCutTypes
-            // 
-            this.GenerateAllTestCutTypes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(48)))));
-            this.GenerateAllTestCutTypes.FlatAppearance.BorderSize = 0;
-            this.GenerateAllTestCutTypes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GenerateAllTestCutTypes.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.GenerateAllTestCutTypes.Location = new System.Drawing.Point(467, 248);
-            this.GenerateAllTestCutTypes.Name = "GenerateAllTestCutTypes";
-            this.GenerateAllTestCutTypes.Size = new System.Drawing.Size(163, 29);
-            this.GenerateAllTestCutTypes.TabIndex = 9;
-            this.GenerateAllTestCutTypes.Text = "生成测试全部切割类型";
-            this.GenerateAllTestCutTypes.UseVisualStyleBackColor = false;
-            this.GenerateAllTestCutTypes.Click += new System.EventHandler(this.GenerateAllTestCutTypes_Click);
-            // 
             // BottomAndRing
             // 
             this.BottomAndRing.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(48)))));
@@ -629,25 +595,11 @@
             this.GenerateCutTypeBtn.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.GenerateCutTypeBtn.Location = new System.Drawing.Point(9, 248);
             this.GenerateCutTypeBtn.Name = "GenerateCutTypeBtn";
-            this.GenerateCutTypeBtn.Size = new System.Drawing.Size(128, 29);
+            this.GenerateCutTypeBtn.Size = new System.Drawing.Size(621, 29);
             this.GenerateCutTypeBtn.TabIndex = 7;
             this.GenerateCutTypeBtn.Text = "生成切割类型";
             this.GenerateCutTypeBtn.UseVisualStyleBackColor = false;
             this.GenerateCutTypeBtn.Click += new System.EventHandler(this.GenerateCutTypeBtn_Click);
-            // 
-            // GenerateTestCutTypes
-            // 
-            this.GenerateTestCutTypes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(48)))));
-            this.GenerateTestCutTypes.FlatAppearance.BorderSize = 0;
-            this.GenerateTestCutTypes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GenerateTestCutTypes.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.GenerateTestCutTypes.Location = new System.Drawing.Point(301, 248);
-            this.GenerateTestCutTypes.Name = "GenerateTestCutTypes";
-            this.GenerateTestCutTypes.Size = new System.Drawing.Size(151, 29);
-            this.GenerateTestCutTypes.TabIndex = 8;
-            this.GenerateTestCutTypes.Text = "生成测试切割类型";
-            this.GenerateTestCutTypes.UseVisualStyleBackColor = false;
-            this.GenerateTestCutTypes.Click += new System.EventHandler(this.GenerateTestCutTypes_Click);
             // 
             // angleC
             // 
@@ -893,6 +845,36 @@
             this.label15.TabIndex = 10;
             this.label15.Text = "次环梁长";
             // 
+            // BeamPart
+            // 
+            this.BeamPart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(48)))));
+            this.BeamPart.FlatAppearance.BorderSize = 0;
+            this.BeamPart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BeamPart.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BeamPart.Location = new System.Drawing.Point(9, 237);
+            this.BeamPart.Name = "BeamPart";
+            this.BeamPart.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.BeamPart.Size = new System.Drawing.Size(624, 29);
+            this.BeamPart.TabIndex = 7;
+            this.BeamPart.Text = "生成纵梁安装图";
+            this.BeamPart.UseVisualStyleBackColor = false;
+            this.BeamPart.Click += new System.EventHandler(this.BeamPart_Click);
+            // 
+            // TopPositin
+            // 
+            this.TopPositin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(48)))));
+            this.TopPositin.FlatAppearance.BorderSize = 0;
+            this.TopPositin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TopPositin.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.TopPositin.Location = new System.Drawing.Point(9, 202);
+            this.TopPositin.Name = "TopPositin";
+            this.TopPositin.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.TopPositin.Size = new System.Drawing.Size(624, 29);
+            this.TopPositin.TabIndex = 7;
+            this.TopPositin.Text = "生成拱顶坐标布置图";
+            this.TopPositin.UseVisualStyleBackColor = false;
+            this.TopPositin.Click += new System.EventHandler(this.TopPositin_Click);
+            // 
             // RingCircle
             // 
             this.RingCircle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(48)))));
@@ -1039,36 +1021,6 @@
             this.label1.Size = new System.Drawing.Size(0, 12);
             this.label1.TabIndex = 0;
             // 
-            // TopPositin
-            // 
-            this.TopPositin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(48)))));
-            this.TopPositin.FlatAppearance.BorderSize = 0;
-            this.TopPositin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.TopPositin.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TopPositin.Location = new System.Drawing.Point(9, 202);
-            this.TopPositin.Name = "TopPositin";
-            this.TopPositin.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.TopPositin.Size = new System.Drawing.Size(624, 29);
-            this.TopPositin.TabIndex = 7;
-            this.TopPositin.Text = "生成拱顶坐标布置图";
-            this.TopPositin.UseVisualStyleBackColor = false;
-            this.TopPositin.Click += new System.EventHandler(this.TopPositin_Click);
-            // 
-            // BeamPart
-            // 
-            this.BeamPart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(48)))));
-            this.BeamPart.FlatAppearance.BorderSize = 0;
-            this.BeamPart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BeamPart.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BeamPart.Location = new System.Drawing.Point(9, 237);
-            this.BeamPart.Name = "BeamPart";
-            this.BeamPart.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.BeamPart.Size = new System.Drawing.Size(624, 29);
-            this.BeamPart.TabIndex = 7;
-            this.BeamPart.Text = "生成纵梁安装图";
-            this.BeamPart.UseVisualStyleBackColor = false;
-            this.BeamPart.Click += new System.EventHandler(this.BeamPart_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1123,9 +1075,6 @@
         private System.Windows.Forms.TextBox angleA;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button GenerateCutTypeBtn;
-        private System.Windows.Forms.Button GenerateTestCutTypes;
-        private System.Windows.Forms.Button GenerateAllTestCutTypes;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label27;
